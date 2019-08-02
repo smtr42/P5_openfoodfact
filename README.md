@@ -1,16 +1,17 @@
-Use public data from OpenFoodFacts to swap bad food for better ones
 
-
- 
 <h1 align="center">
   Project 5 - OpenfoodFact
 </h1>
 
 <p align="center">
   <a href="">
+    <img src="https://cdn.pixabay.com/photo/2017/06/16/07/26/under-construction-2408062_960_720.png" alt="Logo" width="313" height="113">
+  </a>
+</p>
+<p align="center">
+  <a href="">
     <img src="https://upload.wikimedia.org/wikipedia/fr/0/0d/Logo_OpenClassrooms.png" alt="Logo" width="100" height="100">
   </a>
-
 </p>
 
 <p align="center">
@@ -27,19 +28,12 @@ Use public data from OpenFoodFacts to swap bad food for better ones
 
 
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">Use OpenFoodFacts data</h3>
 
-  <p align="center">
-    An awesome README template to jumpstart your projects!
+ <p align="center">
+    A Openclassrooms practical case where you use OpenFoodFacts to find alternatives to lesser nutritious food.
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+
   </p>
 </p>
 
@@ -47,25 +41,22 @@ Use public data from OpenFoodFacts to swap bad food for better ones
 ## Table of Contents
 
 * [About the Project](#about-the-project)
-  * [Built With](#built-with)
 * [Getting Started](#getting-started)
-  * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
 * [Usage](#usage)
-* [Roadmap](#roadmap)
 * [Contributing](#contributing)
-* [License](#license)
 * [Contact](#contact)
-* [Acknowledgements](#acknowledgements)
+* [Acknowledgements](#authors)
 
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+<p align="center">
   <a href="https://fr.openfoodfacts.org/">
     <img src="https://static.openfoodfacts.org/images/misc/openfoodfacts-logo-fr-178x150.png">
   </a>
-  
+</p>
+
 OpenFoodFacts is a database fed by volunteers in order to map the food and its ingredients. It's available under the Open Database License.
 
 The goal is to create an application so the user can find an healthier alternative to a specific food using OpenFoodFacts. It will specify what type of food and where to find it.
@@ -78,15 +69,17 @@ The goal is to learn about:
 * Doc Driven Development,
 * Common good practices.
 
-Challenges I added myself :
-* Cleaning data with Panda library,
+Personal challenges and technical choices :
+* Use Requests: HTTP for Humans™,
+* Use Records: SQL for Humans™,
+* Make UML model of the database.
 
 ### Functionality
 
 * Ability to find a reference in the OpenFoodFacts Database
 * The user is able to use the terminal
 * The search is made in a local Database
-  
+ 
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -100,7 +93,7 @@ git clone https://github.com/smtr42/P5_openfoodfact.git
 ```
 2. Install required dependencies
 ```sh
-pip install
+pipenv install
 ```
 
 <!-- USAGE EXAMPLES -->
@@ -120,13 +113,6 @@ Then the program shows the substitute and the result is written inside the local
 ## Contributing
 
 This project is evaluated so no contribution outside the scope of the course will be accepted.
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-
 
 <!-- CONTACT -->
 ## Contact
