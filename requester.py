@@ -77,7 +77,7 @@ class RequestData:
 
 rd = RequestData()
 rd.fetch_category()
-rd.filter_category()
+# rd.filter_category()
 rd.fetch_products()
 
 # url = ("https://world.openfoodfacts.org/cgi/search.pl?"
