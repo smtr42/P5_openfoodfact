@@ -26,24 +26,16 @@ class RequestData:
             print("Request Timeout, please retry : ", t)
         except requests.exceptions.RequestException as err:
             print("Something went bad, please retry : :", err)
-
-    def filter_category(self):
-        """Filter category"""
-        lister = []
-
-        for name in self.list_cat:
-            if ':' not in name:
-                temp = name.replace('-', ' ').replace('\'', ' ')
-                lister.append(temp)
-
-        sampling = random.sample(lister, 20)
-        self.list_cat = sampling
+        list_cat = ["Fromages", "Sodas", "Yaourts", "Chocolats"]
+        resp = [x for x in self.list_cat if x in list_cat]
+        print("resp = ", resp)
+        self.list_cat = resp
+        self.categories_to_json(resp)
 
     def fetch_products(self):
         """Request the products in respect for the categories loaded"""
         print("Requesting Products - Please wait")
-        print(self.list_cat)
-        all_products = []
+        all_products = {}
         for category in self.list_cat:
             config = {"action": "process",
                       # Get the result by category
@@ -58,21 +50,43 @@ class RequestData:
                       "json": 1}
             response = self.req(self.search_url, param=config)
             data = response.json()
+            all_products[category] = data
 
-            # self.list_prod = [i['name'] for i in data['products']]
-            # print("Success ! Categories loaded")
-            #
-            # products_section = data['products']
-            # for product in products_section:
-            #     product['main_category'] = category
-            # all_products.extend(products_section)
+        self.prod_to_json(all_products)
+        # self.list_prod = [i['name'] for i in data['products']]
+        # print("Success ! Categories loaded")
+        #
+        # products_section = data['products']
+        # for product in products_section:
+        #     product['main_category'] = category
+        # all_products.extend(products_section)
 
     def req(self, url, param=None):
         response = requests.get(url, param)
         return response
 
-    def filter_products(self):
+    def categories_to_json(self, obj):
+        with open('localdata/categories_fr.json', 'w') as f:  # writing JSON object
+            json.dump(obj, f)
+
+    def prod_to_json(self, obj):
+        with open('localdata/products_fr.json', 'w') as f:  # writing JSON object
+            json.dump(obj, f)
+
+    def product_to_json(self, obj):
         pass
+
+    def filter_category(self):
+        """Filter category"""
+        lister = []
+
+        for name in self.list_cat:
+            if ':' not in name:
+                temp = name.replace('-', ' ').replace('\'', ' ')
+                lister.append(temp)
+
+        sampling = random.sample(lister, 20)
+        self.list_cat = sampling
 
 
 rd = RequestData()
