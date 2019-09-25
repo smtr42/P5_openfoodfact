@@ -1,3 +1,8 @@
+
+USER = "user"
+PASSWORD = "password"
+DATABASE_NAME = "mydb"
+
 CATEGORIES = ["Fromages",
               "Desserts",
               "Viandes",

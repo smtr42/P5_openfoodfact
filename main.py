@@ -1,13 +1,10 @@
 from apidata import requester, cleaner
-from dbmanagement import models, managers
+from dbmanagement import models, main_manager
 
 
 def fetch_and_clean():
-    apifetch = requester.RequestData
-    dataclean = cleaner.Cleaner
-    apifetch.fetch_category()
-    apifetch.fetch_products()
-
-    dataclean.filter_product()
+    print("data cleaned")
 
 
+if __name__ == '__main__':
+    pass

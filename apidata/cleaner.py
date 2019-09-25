@@ -44,8 +44,6 @@ class Cleaner:
         return self._result
 
 
-cc = Cleaner()
-cc.filter_product()
-print(cc.get_data)
-with open('localdata/data.json', 'w') as f:
-    json.dump(cc.get_data, f)
+dataclean = cleaner.Cleaner
+dataclean.filter_product()
+

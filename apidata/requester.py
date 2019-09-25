@@ -61,11 +61,11 @@ class RequestData:
         return response
 
     def categories_to_json(self, obj):
-        with open('localdata/categories_fr.json', 'w') as f:  # writing JSON object
+        with open('apidata/localdata/categories_fr.json', 'w') as f:  # writing JSON object
             json.dump(obj, f)
 
     def prod_to_json(self, obj):
-        with open('localdata/products_fr.json', 'w') as f:  # writing JSON object
+        with open('apidata/localdata/products_fr.json', 'w') as f:  # writing JSON object
             json.dump(obj, f)
 
     # def filter_category(self):
