@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 import json
-import random
+from config import constant
 
 
 class RequestData:
@@ -26,9 +26,10 @@ class RequestData:
             print("Request Timeout, please retry : ", t)
         except requests.exceptions.RequestException as err:
             print("Something went bad, please retry : :", err)
-        list_cat = ["Fromages", "Sodas", "Yaourts", "Chocolats"]
+
+        list_cat = constant.CATEGORIES
         resp = [x for x in self.list_cat if x in list_cat]
-        print("resp = ", resp)
+
         self.list_cat = resp
         self.categories_to_json(resp)
 
@@ -45,7 +46,7 @@ class RequestData:
                       "tag_contains_0": "contains",
                       # Number of articles per page
                       # Min content 20, Max content 1000
-                      "page_size": 10,
+                      "page_size": constant.PRODUCT_NUMBER,
                       # The API response in JSON
                       "json": 1}
             response = self.req(self.search_url, param=config)
@@ -53,13 +54,7 @@ class RequestData:
             all_products[category] = data
 
         self.prod_to_json(all_products)
-        # self.list_prod = [i['name'] for i in data['products']]
-        # print("Success ! Categories loaded")
-        #
-        # products_section = data['products']
-        # for product in products_section:
-        #     product['main_category'] = category
-        # all_products.extend(products_section)
+        print("products download and write success")
 
     def req(self, url, param=None):
         response = requests.get(url, param)
@@ -73,34 +68,19 @@ class RequestData:
         with open('localdata/products_fr.json', 'w') as f:  # writing JSON object
             json.dump(obj, f)
 
-    def product_to_json(self, obj):
-        pass
-
-    def filter_category(self):
-        """Filter category"""
-        lister = []
-
-        for name in self.list_cat:
-            if ':' not in name:
-                temp = name.replace('-', ' ').replace('\'', ' ')
-                lister.append(temp)
-
-        sampling = random.sample(lister, 20)
-        self.list_cat = sampling
+    # def filter_category(self):
+    #     """Filter category"""
+    #     lister = []
+    #
+    #     for name in self.list_cat:
+    #         if ':' not in name:
+    #             temp = name.replace('-', ' ').replace('\'', ' ')
+    #             lister.append(temp)
+    #
+    #     sampling = random.sample(lister, 20)
+    #     self.list_cat = sampling
 
 
 rd = RequestData()
 rd.fetch_category()
-# rd.filter_category()
 rd.fetch_products()
-
-# url = ("https://world.openfoodfacts.org/cgi/search.pl?"
-#                 "action=process&tagtype_0=categories&tagtype_1=countries"
-#                 "&tag_contains_1=france&page_size=1000&json=1")
-# print(url)
-
-
-# a= "https://world.openfoodfacts.org/cgi/search.pl?search_terms=banania&search_simple=1&action=process&json=1"
-# response = requests.get(a)
-# data = json.loads(response.text)
-# print(data)

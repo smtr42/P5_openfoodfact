@@ -6,11 +6,12 @@ from dataclasses import dataclass
 @dataclass
 class Product:
 
-    objects = managers.ProductManager(db)
+    # objects = managers.ProductManager(db)
 
     barcode: int = None
+    product_name: str = None
     description: str = None
-    nutrigrade: int = None
+    # nutrigrade: int = None
     nutriscore: str = None
     url: str = None
 
@@ -23,14 +24,15 @@ class Store:
 
 @dataclass
 class Category:
+    id: int = None
     category_name: str = None
 
 
 @dataclass
 class Favorite:
     id: int = None
-    product_name: str = None
-    substitute_name: str = None
+    product_barcode: int = None
+    substitute_barcode: int = None
 
 
 if __name__ == "__main__":
