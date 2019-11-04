@@ -8,7 +8,9 @@ class StoreManager:
                           store_name VARCHAR(255) UNIQUE);
                       """)
 
-    def insert_store(self, barcode, category, product_name, nutrigrade, url, store):
+    def insert_store(self, barcode, category, product_name, nutrigrade, url,
+                     store, *args, **kwargs):
+        # split les différents stores possibles
         for stores in category:
             db.query(""" INSERT INTO Store(stores) 
                             VALUES (:stores) ON DUPLICATE 
@@ -20,8 +22,15 @@ class StoreManager:
                             (SELECT id FROM Store WHERE store_name=:store));
                         """, product_barcode=barcode, store=store)
 
-    def save_store_table(self):
-        pass
+    def create_association_table_store(self):
+        db.query(""" CREATE TABLE IF NOT EXISTS Product_store ( 
+                          id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                          product_barcode INT NOT NULL,
+                          store_id INT NOT NULL,
+                          CONSTRAINT product_store_store FOREIGN KEY (store_id) REFERENCES Store(id)
+                          CONSTRAINT product_store_product FOREIGN KEY (product_barcode) REFERENCES Product(barcode)
+                          );
+                       """)
 
 
 store_manager = StoreManager()

@@ -2,16 +2,13 @@ import json
 from config import constant
 
 
-# ssi nutrigrade, nom, nutriscore présent
-# nutrition-score-fr
-# nutrition_grades
-
 class Cleaner:
     def __init__(self):
         self.keys = ['id', 'product_name_fr', 'nutrition_grade_fr',
                      'url', 'stores']
         self.list_cat = constant.CATEGORIES
         self._result = []
+        self._dict_data = [{}]
 
     def filter_product(self):
         with open('localdata/products_fr.json') as json_file:
@@ -36,14 +33,22 @@ class Cleaner:
         url = element['url']
         store = element['stores']
 
-        product_tuple = (barcode, category, product_name, nutrigrade, url, store)
+        dict = {"barcode": barcode, "category": category,
+                "product_name": product_name, "nutrigrade": nutrigrade,
+                "url": url, "store": store,}
+        self._dict_data.append(dict)
+
+        product_tuple = (barcode, category, product_name, nutrigrade, url, store,)
         self._result.append(product_tuple)
 
     @property
     def get_data(self):
         return self._result
 
+    @property
+    def get_dict_data(self):
+        return self._dict_data
 
-dataclean = cleaner.Cleaner
+
+dataclean = Cleaner
 dataclean.filter_product()
-

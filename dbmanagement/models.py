@@ -1,38 +1,26 @@
 from .database import db
-from dataclasses import dataclass
+from apidata.cleaner import Cleaner
 
 
-@dataclass
 class Product:
-
-    # objects = managers.ProductManager(db)
-
-    barcode: int = None
-    product_name: str = None
-    description: str = None
-    # nutrigrade: int = None
-    nutriscore: str = None
-    url: str = None
+    def __init__(self, barcode, product_name, nutriscore, url, *args, **kwargs):
+        self.barcode = barcode
+        self.product_name = product_name
+        self.nutriscore = nutriscore
+        self.url = url
 
 
-@dataclass
 class Store:
-    id: int = None
-    store_name: str = None
+    def __init__(self, store_name, *args, **kwargs):
+        self.store_name = store_name
 
 
-@dataclass
 class Category:
-    id: int = None
-    category_name: str = None
+    def __init__(self, category, *args, **kwargs):
+        self.category = category
 
 
-@dataclass
 class Favorite:
-    id: int = None
-    product_barcode: int = None
-    substitute_barcode: int = None
-
-
-if __name__ == "__main__":
-    product = Product.objects.get_healthier_than()
+    def __init__(self, product_barcode, substitute_barcode, *args, **kwargs):
+        self.product_barcode = product_barcode
+        self.substitute_barcode = substitute_barcode

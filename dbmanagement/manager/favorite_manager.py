@@ -7,15 +7,13 @@ class FavoriteManager:
         db.query(""" CREATE TABLE IF NOT EXISTS Favorite (
                           id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT, 
                           product_barcode INT NOT NULL,
-                          substitute_barcode INT;                       
-                      """)
-
-    def create_association_table_favorite(self):
-        db.query(""" CREATE TABLE IF NOT EXISTS Product_category ( 
-                          id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                          product_barcode INT REFERENCES Product(barcode),
-                          category_name VARCHAR(255) REFERENCES Category(category_name));
+                          substitute_barcode INT
+                          CONSTRAINT favorite_substitute FOREIGN KEY (substitute_barcode) REFERENCES Product(barcode)
+                          CONSTRAINT favorite_product FOREIGN KEY (product_barcode) REFERENCES Product(barcode)
+                          );
                        """)
+
+
 
     def save_into_favorite(self):
         pass
