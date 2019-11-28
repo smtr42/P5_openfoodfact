@@ -1,5 +1,5 @@
 import records
-from config import constant
+from configuration import constant
 
 
 db = records.Database(f"mysql+mysqlconnector://{constant.USER}:{constant.PASSWORD}@localhost/"

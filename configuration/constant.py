@@ -1,6 +1,6 @@
 
 USER = "user"
-PASSWORD = "password"
+PASSWORD = "pwd"
 DATABASE_NAME = "mydb"
 
 CATEGORIES = ["Fromages",
@@ -9,3 +9,4 @@ CATEGORIES = ["Fromages",
               "Chocolats",]
 
 PRODUCT_NUMBER = 1000
+
