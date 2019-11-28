@@ -2,18 +2,13 @@ from dbmanagement.database import db
 
 
 class CategoryManager:
-    def create_category_table(self):
-        db.query(""" CREATE TABLE IF NOT EXISTS Category (
-                          id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                          category_name VARCHAR(255) UNIQUE;
-                      """)
 
-    def insert_category(self, barcode, category, product_name, nutrigrade, url, store):
-        for cat in category:
-            db.query(""" INSERT INTO Category(cat) 
-                            VALUES (:cat) ON DUPLICATE 
-                            KEY UPDATE cat=:cat;
-                        """, cat=cat)
+    def insert_category(self, category):
+        db.query(""" INSERT INTO Category(category_name) 
+                        VALUES (:category) ON DUPLICATE
+                        KEY UPDATE category_name=:category ;
+                    """, category=category)
+
 
     def create_association_table_category(self):
         db.query(""" CREATE TABLE IF NOT EXISTS Product_category ( 
@@ -24,5 +19,4 @@ class CategoryManager:
                           CONSTRAINT product_category_product FOREIGN KEY (product_barcode) REFERENCES Product(barcode)
                           );
                        """)
-
 category_manager = CategoryManager()
