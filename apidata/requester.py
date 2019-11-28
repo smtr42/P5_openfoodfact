@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 import json
-from config import constant
+from configuration import constant
 
 
 class RequestData:
@@ -61,11 +61,13 @@ class RequestData:
         return response
 
     def categories_to_json(self, obj):
-        with open('apidata/localdata/categories_fr.json', 'w') as f:  # writing JSON object
+        with open('apidata/localdata/categories_fr.json',
+                  'w') as f:  # writing JSON object
             json.dump(obj, f)
 
     def prod_to_json(self, obj):
-        with open('apidata/localdata/products_fr.json', 'w') as f:  # writing JSON object
+        with open('apidata/localdata/products_fr.json',
+                  'w') as f:  # writing JSON object
             json.dump(obj, f)
 
     # def filter_category(self):
