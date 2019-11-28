@@ -1,5 +1,7 @@
 import json
-from config import constant
+import os
+# import configuration.constant as constant
+from configuration import constant
 
 
 class Cleaner:
@@ -8,10 +10,13 @@ class Cleaner:
                      'url', 'stores']
         self.list_cat = constant.CATEGORIES
         self._result = []
-        self._dict_data = [{}]
+        self._dict_data = []
+        self.filter_product()
 
     def filter_product(self):
-        with open('localdata/products_fr.json') as json_file:
+        this_folder = os.path.dirname(os.path.abspath(__file__))
+        my_file = os.path.join(this_folder, 'localdata/products_fr.json')
+        with open(my_file) as json_file:
             data = json.load(json_file)
             for category in self.list_cat:
                 products_s = data[category]['products']
@@ -23,32 +28,39 @@ class Cleaner:
         for x in self.keys:
             if x not in element or element[x] == "":
                 return False
+        if len(element["id"]) != 13 or element["id"] in self._dict_data:
+            return False
         return True
 
     def data_format(self, element, cat):
-        barcode = element['id']
+        barcode = int(element['id'])
         category = cat
         product_name = element['product_name_fr']
-        nutrigrade = element['nutrition_grade_fr']
+        nutriscore = element['nutrition_grade_fr']
         url = element['url']
-        store = element['stores']
+        store = element['stores'].split()
 
-        dict = {"barcode": barcode, "category": category,
-                "product_name": product_name, "nutrigrade": nutrigrade,
-                "url": url, "store": store,}
-        self._dict_data.append(dict)
+        dictionnaire = {"barcode": barcode, "category": category,
+                        "product_name": product_name, "nutriscore": nutriscore,
+                        "url": url, "store": store, }
 
-        product_tuple = (barcode, category, product_name, nutrigrade, url, store,)
+        # product = Product(**dictionnaire)
+        self._dict_data.append(dictionnaire)
+
+        product_tuple = (
+            barcode, category, product_name, nutriscore, url, store,)
         self._result.append(product_tuple)
 
     @property
     def get_data(self):
         return self._result
 
-    @property
+    @property  # the one to use
     def get_dict_data(self):
         return self._dict_data
 
+print("dataclean is running")
+dataclean = Cleaner()
 
-dataclean = Cleaner
-dataclean.filter_product()
+# if __name__ == '__main__':
+#     dataclean = Cleaner()
