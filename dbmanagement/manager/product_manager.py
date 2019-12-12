@@ -85,22 +85,30 @@ class ProductManager:
                             nutriscore=:nutriscore, url=:url;
                         """, **product)
 
+            # pour chaque store dans dans product on insert le store_name dans store:
+            for store_name in product["stores"].split(","):
+                db.query("""INSERT INTO Store(id, name)
+                            VALUES(null, :name) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), 
+                            name=:store_name;""",
+                         store_name=store_name.strip().lower())  # id de Store ? simple ou "last insert id" ?
+
+                store_id = None
+                for row in db.query("""SELECT LAST_INSERT_ID() as id"""):
+                    store_id = row["id"]
+                barcode = product["barcode"]
+
+                db.query(
+                    """
+                    INSERT INTO Product_store(product_barcode, store_id)
+                    values (:barcode, store_id);
+                    """,
+                    barcode=barcode, store_id=store_id,
+                    **product,
+                )
+
             # Insérer la catégorie dans Category
             self.categorymanager.insert_category(product["category"])
 
-            # Insérer dans la table d'association Product_Category
-            rows = db.query(
-                """ SELECT LAST_INSERT_ID()""")
-            db.query("""INSERT INTO Product_category(product_barcode, category_id)
-                        VALUES(:barcode, :category_id)
-                        ;
-                        """, barcode=product["barcode"], category_id=rows)
-
-            # pour chaque magasin dans dans product:
-            for store_name in product["stores"]:
-                db.query("""INSERT INTO Store(id, store_name)
-                            VALUES(null, :store_name) ON DUPLICATE KEY UPDATE id=LASt_INSERT_ID(id),
-                            store_name=:store_name;""", store_name  =store_name.strip().lower())
         print("fin")
 
     def get_product_by_barcode(self, barcode):
