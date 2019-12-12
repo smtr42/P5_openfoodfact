@@ -23,10 +23,12 @@ class ProductManager:
                           nutriscore CHAR(1),
                           url VARCHAR(255));
                         """)
+
         db.query(""" CREATE TABLE IF NOT EXISTS Category (
                           id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                           category_name VARCHAR(255) UNIQUE);
                       """)
+
         # db.query(""" CREATE TABLE IF NOT EXISTS Favorite (
         #                   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
         #                   product_barcode INT NOT NULL,
@@ -43,6 +45,7 @@ class ProductManager:
                           id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                           store_name VARCHAR(255) UNIQUE);
                           """)
+
         # creation des tables d'association
         db.query(""" CREATE TABLE IF NOT EXISTS Product_category (
                             id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -81,6 +84,7 @@ class ProductManager:
                             barcode=:barcode,product_name=:product_name,
                             nutriscore=:nutriscore, url=:url;
                         """, **product)
+
             # Insérer la catégorie dans Category
             self.categorymanager.insert_category(product["category"])
 
@@ -93,10 +97,10 @@ class ProductManager:
                         """, barcode=product["barcode"], category_id=rows)
 
             # pour chaque magasin dans dans product:
-            for stores in product["stores"]:
-                db.query("""INSERT INTO Store(store_name)
-                            VALUES(:stores) ON DUPLICATE KEY UPDATE 
-                            store_name=:stores;""", stores=stores)
+            for store_name in product["stores"]:
+                db.query("""INSERT INTO Store(id, store_name)
+                            VALUES(null, :store_name) ON DUPLICATE KEY UPDATE id=LASt_INSERT_ID(id),
+                            store_name=:store_name;""", store_name  =store_name.strip().lower())
         print("fin")
 
     def get_product_by_barcode(self, barcode):

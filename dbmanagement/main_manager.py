@@ -7,12 +7,13 @@
 #     def __init__(self, cleaner):
 #         self.cleaner = cleaner
 #         self.data = self.cleaner.get_data
+#
 #     def drop_tables(self):
 #         db.query(""" DROP TABLE IF EXISTS
-#                           Category, Product_category,
-#                           Product, Product_store,
-#                           Store, Favorite;
-#                       """)
+#                           Product, Category, Store,
+#                           Favorite, Product_category,
+#                           Product_Store;
+#                         """)
 #
 #     def create_tables(self):
 #         product_manager.create_product_table()
@@ -32,3 +33,22 @@
 #
 #
 # main_manager = MainManager(Cleaner)
+#
+# main_manager.drop_tables()
+# main_manager.create_tables()
+# main_manager.populate_tables()
+
+
+# 1 - Quel aliment souhaitez-vous remplacer ?
+#     Sélectionnez la catégorie.
+#         afficher 5 propositions
+#         utilisateur séléectionne un chiffre et appuie sur entrée
+#             Afficher 5 mauvais aliments de la catégorie précédemment sélectionnée
+#             utilisateur sélectionne un chiffre et appuie sur entrée
+#             afficher un substitut et son détail
+#                 proposer la possiblité d'enregistrer l'aliment dans les favoris
+#                 proposer de revenir au menu
+# 2 - Retrouver mes aliments substitués.
+#     affiche la liste des aliments substitués
+#         l'utilisateur sélectionne un chiffre et appuie sur entrée' \
+#             affichage de l'aliment sélectionné'
