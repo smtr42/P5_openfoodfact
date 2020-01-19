@@ -2,46 +2,40 @@
 
 from state import State
 
-
+# comment for git
 # Start of our states
 class StartMenu(State):
-    """
-    The state which indicates that there are limited device capabilities.
-    """
-
+    def __init__(self):
+        self.menu = {
+            1: CategoryMenu,
+            2: FavMenu,
+        }
     def show(self):
-        print("1. => Quel aliment souhaitez-vous remplacer ?\n"
-              "2. Retrouver mes aliments substitués\n"
-              "3. Quitter")
+        print("1. Which food would you like to substitute ?\n"
+              "2. Find my favorites healthy food\n")
 
     def on_event(self, event):
-        if event == 1:
-            return CategoryMenu()
-        if event == 2:
-            return FavMenu()
-        if event == 3:
-            return LoopStopper()
-        return self
+        if event == "strtmnu":
+            return self
+        else:
+            return self.menu.get(event, lambda: "")()
 
 
 class CategoryMenu(State):
-    """
-    The state which indicates that there are no limitations on device
-    capabilities.
-    """
 
     def __init__(self):
-        self.cat_list = self.get_random_cat()
+        self.menu = self.get_random_cat()
+
 
     def show(self):
-        for item in self.cat_list:
-            print(f"{item}. {self.cat_list[item]}")
+        for item in self.menu:
+            print(f"{item}. {self.menu[item]}")
 
     def on_event(self, event):
-        if event in self.cat_list.keys():
-            return ProductMenu(self.cat_list[event])
-        if event == 6:
-            return StartMenu()
+        if event == "bck":
+            return self
+        elif event in self.menu.keys():
+            return ProductMenu(self.menu[event])
         return self
 
     def get_random_cat(self):
@@ -53,21 +47,24 @@ class CategoryMenu(State):
 class ProductMenu(State):
     def __init__(self, selected_cat):
         self.selected_cat = selected_cat
-        self.prod_list = self.get_product_by_category()
+        self.menu = self.get_product_by_category()
 
     def show(self):
-        for item in self.prod_list:
-            print(f"{item}. {self.prod_list[item]}")
+        for item in self.menu:
+            print(f"{item}. {self.menu[item]}")
 
     def on_event(self, event):
-        return
+        if event == "bck":
+            return self
+        return self
         pass
 
     def get_product_by_category(self):
-        # aller récupérer la fonction dans le manager en fonction cate
+        # aller récupérer la fonction dans le manager en fonction category
         prod_list = {1: "camembert", 2: "vieux pané", 3: "st felicien",
                      4: "gruyère", 5: "morbier"}
         return prod_list
+
 
 class ShowProduct(State):
 
@@ -77,7 +74,7 @@ class ShowProduct(State):
     def on_event(self):
         # affichage du produit
         # possibilité de sauvegarder
-        # possibilité de quitter
+        # possibilité de voir les fav
         pass
 
     def get_product_data(self):
@@ -88,12 +85,23 @@ class ShowProduct(State):
         # à récupérer dans le manager
         pass
 
+
 class FavMenu(State):
-    pass
-
-
-class LoopStopper(State):
-    def on_event(self, event):
+    def __init__(self):
+        # get list of fav
         pass
+
+    def show(self):
+        # show the menu with the list
+        pass
+
+    def on_event(self, event):
+        # select number and go to state
+        pass
+
+    def get_fav(self):
+        # get fav from database
+        pass
+
 
 # End of our states.

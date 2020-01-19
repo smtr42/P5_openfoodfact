@@ -1,4 +1,7 @@
 from my_states import StartMenu
+import os
+import time
+import sys
 
 
 class Machine(object):
@@ -12,6 +15,8 @@ class Machine(object):
 
         # Start with a default state.
         self.state = StartMenu()
+        self.start_menu = self.state
+        self.back_menu = None
 
     def show(self):
         self.state.show()
@@ -22,21 +27,59 @@ class Machine(object):
         delegated to the given states which then handle the event. The result is
         then assigned as the new state.
         """
-
         # The next state will be the result of the on_event function.
+        if self.state != self.back_menu:
+            self.back_menu = self.state
         self.state = self.state.on_event(event)
 
     def input_checker(self):
+        input_error_message = ("\n"
+                               "!! write down one of the number on the screen !!"
+                               "\n")
         while True:
-            ui = input("Write a number :")
+            ui = input(
+                """Choose the menu you want to access by writing the line's number :
+            Go back is 'r', quit is 'q'
+=>""")
             try:
                 ui = int(ui)
             except ValueError:
-                print("Entrer UNIQUEMENT un chiffre")
-                continue
-            if ui > 6:
-                print("Entrer UNIQUEMENT un chiffre comme affiché")
+                if ui == "q":
+                    self.exit_program()
+                elif ui == "r":
+                    self.go_back()
+                    return "bck"
+                elif ui == "m":
+                    self.go_start()
+                    return "strtmnu"
+                else:
+                    print(input_error_message)
+                    self.show()
+                    continue
+            if ui > max(self.state.menu.keys()):
+                print(input_error_message)
+                self.show()
             elif ui <= 0:
-                print("Entrer UNIQUEMENT un chiffre comme affiché")
+                print(input_error_message)
+                self.show()
             else:
                 return ui
+
+    def exit_program(self):
+        i = 3
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("The program will quit in ", i, "s"
+                                              "\n"
+                                              "Your favorites are permanently saved in the database")
+        while i >= 0:
+            print(i, "s")
+            time.sleep(1)
+            i -= 1
+        sys.exit()
+
+    def go_back(self):
+
+        self.state = self.back_menu
+
+    def go_start(self):
+        self.state = self.start_menu
