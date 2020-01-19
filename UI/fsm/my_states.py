@@ -1,8 +1,6 @@
 # my_states.py
-
 from state import State
 
-# comment for git
 # Start of our states
 class StartMenu(State):
     def __init__(self):
@@ -10,6 +8,7 @@ class StartMenu(State):
             1: CategoryMenu,
             2: FavMenu,
         }
+
     def show(self):
         print("1. Which food would you like to substitute ?\n"
               "2. Find my favorites healthy food\n")
@@ -25,7 +24,6 @@ class CategoryMenu(State):
 
     def __init__(self):
         self.menu = self.get_random_cat()
-
 
     def show(self):
         for item in self.menu:
@@ -102,6 +100,5 @@ class FavMenu(State):
     def get_fav(self):
         # get fav from database
         pass
-
 
 # End of our states.

@@ -17,8 +17,6 @@ print("""\
       "\n"
       "")
 
-
-
 device = Machine()
 while True:
     device.show()
