@@ -8,6 +8,7 @@ class StoreManager:
                               id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                               store_name VARCHAR(255) UNIQUE);
                               """)
+
         # db.query(""" CREATE TABLE IF NOT EXISTS Product_store (
         #                   id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
         #                   product_barcode BIGINT NOT NULL,

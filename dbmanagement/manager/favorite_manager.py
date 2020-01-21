@@ -17,8 +17,10 @@ class FavoriteManager:
                             REFERENCES Product(barcode));
                         """)
 
-    def save_into_favorite(self):
+    def save_prod_to_fav(self, product):
+        """save in the db the selected substitute"""
         pass
 
     def get_all_favorite(self):
+        """ retrieve all substitute saved by the user"""
         pass

@@ -5,7 +5,7 @@ from configuration import constant
 
 
 class RequestData:
-    """ """
+    """ The class fetch the data and save it in to a json file"""
 
     def __init__(self):
         self.cat_url = "https://fr.openfoodfacts.org/categories.json"
@@ -14,6 +14,7 @@ class RequestData:
         self.list_prod = []
 
     def fetch_category(self):
+        """ fetch the categories"""
         """Request the list of category from the API"""
         print("Requesting Categories - Please wait")
         try:
@@ -57,15 +58,18 @@ class RequestData:
         print("products download and write success")
 
     def req(self, url, param=None):
+        """ small request function used multiple times"""
         response = requests.get(url, param)
         return response
 
     def categories_to_json(self, obj):
+        """saving categories to a json files"""
         with open('apidata/localdata/categories_fr.json',
                   'w') as f:  # writing JSON object
             json.dump(obj, f)
 
     def prod_to_json(self, obj):
+        """save the products to a json file"""
         with open('apidata/localdata/products_fr.json',
                   'w') as f:  # writing JSON object
             json.dump(obj, f)
