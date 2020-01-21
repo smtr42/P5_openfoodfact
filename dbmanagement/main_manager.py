@@ -1,6 +1,6 @@
 from dbmanagement.database import db
 from dbmanagement.models import Product
-from apidata.cleaner import Cleaner, dataclean
+from apidata.cleaner import Cleaner
 
 from dbmanagement.manager.category_manager import CategoryManager
 from dbmanagement.manager.product_manager import ProductManager
@@ -9,9 +9,8 @@ from dbmanagement.manager.store_manager import StoreManager
 
 
 class MainManager:
-    def __init__(self, cleaner):
-        self.cleaner = cleaner
-        self.data = self.cleaner.get_dict_data()
+    def __init__(self):
+        self.data = dataclean.get_dict_data()
 
     def drop_tables(self):
         db.query(""" DROP TABLE IF EXISTS
@@ -19,6 +18,7 @@ class MainManager:
                           Favorite, Product_category,
                           Product_Store;
                         """)
+
     def create_tables(self):
         category_manager.create_tables()
         store_manager.create_tables()
@@ -26,9 +26,7 @@ class MainManager:
         favorite_manager.create_tables()
 
     def populate_tables(self):
-        print(self.data)
         product_manager.insert_products(self.data)
-        pass
         # data = self.data
         # for product in data:
         #     category_manager.insert_category(*product)
@@ -36,19 +34,17 @@ class MainManager:
         #     # store_manager.insert_store(*product)
 
 
+dataclean = Cleaner()
+
 category_manager = CategoryManager()
-product_manager = ProductManager(dataclean, Product)
+product_manager = ProductManager(Product)
 favorite_manager = FavoriteManager()
 store_manager = StoreManager()
 
-main_manager = MainManager(Cleaner)
+main_manager = MainManager()
 main_manager.drop_tables()
 main_manager.create_tables()
 main_manager.populate_tables()
-
-
-
-
 
 # 1 - Quel aliment souhaitez-vous remplacer ?
 #     Sélectionnez la catégorie.

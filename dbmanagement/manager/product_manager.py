@@ -3,8 +3,8 @@ from dbmanagement.database import db
 
 class ProductManager:
 
-    def __init__(self, cleaner, product):
-        self.data = cleaner.get_dict_data
+    def __init__(self, product):
+        # self.data = cleaner.get_dict_data
         self.product = product
         # self.insert_products(self.data)
 
@@ -45,6 +45,7 @@ class ProductManager:
         # pour chaque produit dans data
         for product in data:
             # insérer le produit en base
+            print("insertion dans Product")
             db.query("""INSERT INTO Product(barcode, product_name, nutriscore,
                                                                             url)
                         VALUES (:barcode, :product_name,:nutriscore, :url) 
@@ -54,11 +55,13 @@ class ProductManager:
                         """, **product)
 
             # pour chaque store dans dans product on insert le store_name dans store:
-            for store_name in product["stores"].split(","):
-                db.query("""INSERT INTO Store(id, name)
-                            VALUES(null, :name) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), 
-                            name=:store_name;""",
-                         store_name=store_name.strip().lower())  # id de Store ? simple ou "last insert id" ?
+            print("insertion dans Store")
+            for store_name in product["store"]:
+                db.query("""INSERT INTO Store(id, store_name)
+                            VALUES(null, :store_name)
+                            ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), 
+                            store_name=store_name;""",
+                         store_name=store_name.strip().lower(),)
 
                 store_id = None
                 for row in db.query("""SELECT LAST_INSERT_ID() as id"""):
@@ -68,10 +71,12 @@ class ProductManager:
                 db.query(
                     """
                     INSERT INTO Product_store(product_barcode, store_id)
-                    values (:barcode, store_id);
+                    values (:barcode, :store_id)
+                    ON DUPLICATE KEY UPDATE product_barcode=barcode
+                    ;
                     """,
                     barcode=barcode, store_id=store_id,
-                    **product,
+                    # **product,
                 )
 
             # # Insérer la catégorie dans Category
@@ -81,7 +86,3 @@ class ProductManager:
 
     def get_product_by_barcode(self, barcode):
         pass
-
-
-print("product manager is running")
-# product_manager = ProductManager(dataclean, Product, category_manager)

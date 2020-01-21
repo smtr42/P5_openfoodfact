@@ -1,6 +1,5 @@
 import json
 import os
-# import configuration.constant as constant
 from configuration import constant
 
 
@@ -38,13 +37,11 @@ class Cleaner:
         product_name = element['product_name_fr']
         nutriscore = element['nutrition_grade_fr']
         url = element['url']
-        store = element['stores'].split()
+        store = element['stores'].split(",")
 
         dictionnaire = {"barcode": barcode, "category": category,
                         "product_name": product_name, "nutriscore": nutriscore,
                         "url": url, "store": store, }
-
-        # product = Product(**dictionnaire)
         self._dict_data.append(dictionnaire)
 
         product_tuple = (
@@ -55,12 +52,5 @@ class Cleaner:
     def get_data(self):
         return self._result
 
-    # @property  # the one to use
     def get_dict_data(self):
         return self._dict_data
-
-print("dataclean is running")
-dataclean = Cleaner()
-
-# if __name__ == '__main__':
-#     dataclean = Cleaner()
