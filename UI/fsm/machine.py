@@ -1,4 +1,4 @@
-from my_states import StartMenu
+from .my_states import StartMenu
 import os
 import time
 import sys

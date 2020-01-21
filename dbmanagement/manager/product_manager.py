@@ -1,22 +1,14 @@
 from dbmanagement.database import db
-from apidata.cleaner import dataclean
-from dbmanagement.models import Product
-from dbmanagement.manager.category_manager import category_manager
 
 
 class ProductManager:
 
-    def __init__(self, cleaner, product, categorymanager):
+    def __init__(self, cleaner, product):
         self.data = cleaner.get_dict_data
         self.product = product
-        self.categorymanager = categorymanager
+        # self.insert_products(self.data)
 
-        db.query(""" DROP TABLE IF EXISTS
-                          Product, Category, Store,
-                          Favorite, Product_category,
-                          Product_Store;
-                        """)
-
+    def create_tables(self):
         db.query(""" CREATE TABLE IF NOT EXISTS Product (
                           barcode BIGINT UNSIGNED UNIQUE PRIMARY KEY,
                           product_name VARCHAR(255) NOT NULL,
@@ -24,34 +16,12 @@ class ProductManager:
                           url VARCHAR(255));
                         """)
 
-        db.query(""" CREATE TABLE IF NOT EXISTS Category (
-                          id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                          category_name VARCHAR(255) UNIQUE);
-                      """)
-
-        # db.query(""" CREATE TABLE IF NOT EXISTS Favorite (
-        #                   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-        #                   product_barcode INT NOT NULL,
-        #                   substitute_barcode INT
-        #                   CONSTRAINT fk_favorite_substitute
-        #                     FOREIGN KEY (substitute_barcode)
-        #                     REFERENCES Product(barcode)
-        #                   CONSTRAINT fk_favorite_product
-        #                     FOREIGN KEY (product_barcode)
-        #                     REFERENCES Product(barcode)
-        #                   );
-        #                 """)
-        db.query(""" CREATE TABLE IF NOT EXISTS Store (
-                          id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                          store_name VARCHAR(255) UNIQUE);
-                          """)
-
         # creation des tables d'association
         db.query(""" CREATE TABLE IF NOT EXISTS Product_category (
                             id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                             product_barcode BIGINT UNSIGNED UNIQUE,
                             category_id INT NOT NULL,
-                            
+
                             CONSTRAINT fk_productbarcode_barcode 
                                 FOREIGN KEY (product_barcode)
                                 REFERENCES Product(barcode),
@@ -63,7 +33,7 @@ class ProductManager:
                             id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                             product_barcode BIGINT UNSIGNED UNIQUE,
                             store_id BIGINT UNSIGNED UNIQUE,
-                            
+
                             CONSTRAINT fk_productbarcodestore_barcode
                                 FOREIGN KEY (product_barcode)
                                 REFERENCES Product(barcode),
@@ -71,8 +41,6 @@ class ProductManager:
                                 FOREIGN KEY (store_id)
                                 REFERENCES Store(id));
                             """)
-        self.insert_products(self.data)
-
     def insert_products(self, data):
         # pour chaque produit dans data
         for product in data:
@@ -106,8 +74,8 @@ class ProductManager:
                     **product,
                 )
 
-            # Insérer la catégorie dans Category
-            self.categorymanager.insert_category(product["category"])
+            # # Insérer la catégorie dans Category
+            # self.categorymanager.insert_category(product["category"])
 
         print("fin")
 
@@ -116,4 +84,4 @@ class ProductManager:
 
 
 print("product manager is running")
-product_manager = ProductManager(dataclean, Product, category_manager)
+# product_manager = ProductManager(dataclean, Product, category_manager)

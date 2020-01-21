@@ -1,4 +1,4 @@
-from machine import Machine
+from .machine import Machine
 
 print("""\
    ____                   ______              _  __           _

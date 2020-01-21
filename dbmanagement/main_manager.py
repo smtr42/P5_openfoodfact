@@ -1,42 +1,53 @@
-# from dbmanagement.database import db
-# from apidata.cleaner import Cleaner
-# from dbmanagement.manager import category_manager, product_manager, favorite_manager, store_manager
-#
-#
-# class MainManager:
-#     def __init__(self, cleaner):
-#         self.cleaner = cleaner
-#         self.data = self.cleaner.get_data
-#
-#     def drop_tables(self):
-#         db.query(""" DROP TABLE IF EXISTS
-#                           Product, Category, Store,
-#                           Favorite, Product_category,
-#                           Product_Store;
-#                         """)
-#
-#     def create_tables(self):
-#         product_manager.create_product_table()
-#         store_manager.create_store_table()
-#         category_manager.create_category_table()
-#         favorite_manager.create_table_favorite()
-#         # create association tables
-#
-#
-#     def populate_tables(self):
-#         data = self.data
-#         for product in data:
-#             product_manager.insert_product(*product)
-#             store_manager.insert_store(*product)
-#             category_manager.insert_category(*product)
-#         pass
-#
-#
-# main_manager = MainManager(Cleaner)
-#
-# main_manager.drop_tables()
-# main_manager.create_tables()
-# main_manager.populate_tables()
+from dbmanagement.database import db
+from dbmanagement.models import Product
+from apidata.cleaner import Cleaner, dataclean
+
+from dbmanagement.manager.category_manager import CategoryManager
+from dbmanagement.manager.product_manager import ProductManager
+from dbmanagement.manager.favorite_manager import FavoriteManager
+from dbmanagement.manager.store_manager import StoreManager
+
+
+class MainManager:
+    def __init__(self, cleaner):
+        self.cleaner = cleaner
+        self.data = self.cleaner.get_dict_data()
+
+    def drop_tables(self):
+        db.query(""" DROP TABLE IF EXISTS
+                          Product, Category, Store,
+                          Favorite, Product_category,
+                          Product_Store;
+                        """)
+    def create_tables(self):
+        category_manager.create_tables()
+        store_manager.create_tables()
+        product_manager.create_tables()
+        favorite_manager.create_tables()
+
+    def populate_tables(self):
+        print(self.data)
+        product_manager.insert_products(self.data)
+        pass
+        # data = self.data
+        # for product in data:
+        #     category_manager.insert_category(*product)
+        #     # product_manager.insert_products(*product)
+        #     # store_manager.insert_store(*product)
+
+
+category_manager = CategoryManager()
+product_manager = ProductManager(dataclean, Product)
+favorite_manager = FavoriteManager()
+store_manager = StoreManager()
+
+main_manager = MainManager(Cleaner)
+main_manager.drop_tables()
+main_manager.create_tables()
+main_manager.populate_tables()
+
+
+
 
 
 # 1 - Quel aliment souhaitez-vous remplacer ?

@@ -55,7 +55,7 @@ class Cleaner:
     def get_data(self):
         return self._result
 
-    @property  # the one to use
+    # @property  # the one to use
     def get_dict_data(self):
         return self._dict_data
 
