@@ -11,8 +11,9 @@ class Cleaner:
         self.keys = ['id', 'product_name_fr', 'nutrition_grade_fr',
                      'url', 'stores']
         self.list_cat = constant.CATEGORIES
-        self._result = []
         self._dict_data = []
+        self.unicity = {"a": 1, }
+        self.barcode_list = []
         self.filter_product()
 
     def filter_product(self):
@@ -30,9 +31,12 @@ class Cleaner:
     def data_exist(self, element):
         """ run trough the data, if something's missing, it's discarded"""
         for x in self.keys:
-            if x not in element or element[x] == "":
+            if x not in element or element[x] == "" or len(element["id"]) != 13:
                 return False
-        if len(element["id"]) != 13 or element["id"] in self._dict_data:
+        barcode = int(element['id'])
+        if barcode not in set(self.barcode_list):
+            self.barcode_list.append(barcode)
+        else:
             return False
         return True
 
@@ -43,20 +47,15 @@ class Cleaner:
         product_name = element['product_name_fr']
         nutriscore = element['nutrition_grade_fr']
         url = element['url']
-        store = element['stores'].split(",")
+
+        store_list_lower = [x.lower() for x in element['stores'].split(",")]
+        store = list(set(store_list_lower))
 
         dictionnaire = {"barcode": barcode, "category": category,
-                        "product_name": product_name, "nutriscore": nutriscore,
+                        "product_name": product_name,
+                        "nutriscore": nutriscore,
                         "url": url, "store": store, }
         self._dict_data.append(dictionnaire)
-
-        product_tuple = (
-            barcode, category, product_name, nutriscore, url, store,)
-        self._result.append(product_tuple)
-
-    @property
-    def get_data(self):
-        return self._result
 
     def get_dict_data(self):
         """ retrieve the final data"""

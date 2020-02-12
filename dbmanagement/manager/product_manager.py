@@ -29,9 +29,10 @@ class ProductManager:
                             """)
         db.query(""" CREATE TABLE IF NOT EXISTS Product_store(
                             id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                            product_barcode BIGINT UNSIGNED UNIQUE,
-                            store_id BIGINT UNSIGNED UNIQUE,
-
+                            product_barcode BIGINT UNSIGNED,
+                            store_id BIGINT UNSIGNED,
+                            UNIQUE(product_barcode, store_id),
+                            
                             CONSTRAINT fk_productbarcodestore_barcode
                                 FOREIGN KEY (product_barcode)
                                 REFERENCES Product(barcode),
@@ -44,7 +45,7 @@ class ProductManager:
         # pour chaque produit dans data
         for product in data:
             # insérer le produit en base
-            print("insertion dans Product")
+            # print("insertion dans Product")
             db.query("""INSERT INTO Product(barcode, product_name, nutriscore,
                                                                             url)
                         VALUES (:barcode, :product_name,:nutriscore, :url) 
@@ -54,13 +55,13 @@ class ProductManager:
                         """, **product)
 
             # pour chaque store dans dans product on insert le store_name dans store:
-            print("insertion dans Store")
+            # print("insertion dans Store")
             for store_name in product["store"]:
                 db.query("""INSERT INTO Store(id, store_name)
                             VALUES(null, :store_name)
                             ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), 
                             store_name=store_name;""",
-                         store_name=store_name.strip().lower(), )
+                         store_name=store_name.strip(), )
 
                 store_id = None
                 for row in db.query("""SELECT LAST_INSERT_ID() as id"""):
@@ -71,7 +72,7 @@ class ProductManager:
                     """
                     INSERT INTO Product_store(product_barcode, store_id)
                     values (:barcode, :store_id)
-                    ON DUPLICATE KEY UPDATE product_barcode=barcode;
+                    ;
                     """,
                     barcode=barcode, store_id=store_id,
                     # **product,
@@ -93,6 +94,3 @@ class ProductManager:
     def get_product_by_barcode(self, barcode):
         """ return the product full description after user selected a product"""
         pass
-
-
-

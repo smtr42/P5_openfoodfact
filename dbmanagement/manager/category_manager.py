@@ -9,15 +9,6 @@ class CategoryManager:
                           category_name VARCHAR(255) UNIQUE);
                       """)
 
-        # db.query(""" CREATE TABLE IF NOT EXISTS Product_category (
-        #                   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-        #                   product_barcode INT ,
-        #                   category_id INT )
-        #                   CONSTRAINT product_category_category FOREIGN KEY (category_id) REFERENCES Category(id)
-        #                   CONSTRAINT product_category_product FOREIGN KEY (product_barcode) REFERENCES Product(barcode)
-        #                   );
-        #                """)
-
     def insert_category(self, category):
 
         db.query(""" INSERT INTO Category(category_name) 

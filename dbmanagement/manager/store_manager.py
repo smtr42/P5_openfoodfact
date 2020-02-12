@@ -9,14 +9,6 @@ class StoreManager:
                               store_name VARCHAR(255) UNIQUE);
                               """)
 
-        # db.query(""" CREATE TABLE IF NOT EXISTS Product_store (
-        #                   id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-        #                   product_barcode BIGINT NOT NULL,
-        #                   store_id INT NOT NULL,
-        #                   CONSTRAINT product_store_store FOREIGN KEY (store_id) REFERENCES Store(id)
-        #                   CONSTRAINT product_store_product FOREIGN KEY (product_barcode) REFERENCES Product(barcode)
-        #                   );
-        #                """)
     # def insert_store(self, barcode, category, product_name, nutrigrade, url, store, *args, **kwargs):
     #     # split les différents stores possibles
     #     for stores in store:
