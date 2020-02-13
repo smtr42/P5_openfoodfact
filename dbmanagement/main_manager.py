@@ -7,6 +7,8 @@ from dbmanagement.manager.product_manager import ProductManager
 from dbmanagement.manager.favorite_manager import FavoriteManager
 from dbmanagement.manager.store_manager import StoreManager
 
+import time
+
 
 class MainManager:
     def __init__(self):
@@ -34,17 +36,27 @@ class MainManager:
         #     # store_manager.insert_store(*product)
 
 
+start_time = time.time()
+print("starting ")
+
 dataclean = Cleaner()
+print("dataclean ran in {}s".format(time.time() - start_time))
 
 category_manager = CategoryManager()
 product_manager = ProductManager(Product)
 favorite_manager = FavoriteManager()
 store_manager = StoreManager()
+print("instanciation ran in {}s".format(time.time() - start_time))
 
 main_manager = MainManager()
 main_manager.drop_tables()
 main_manager.create_tables()
+print("create table  ran in {}s".format(time.time() - start_time))
 main_manager.populate_tables()
+print("main manager  ran in {}s".format(time.time() - start_time))
+
+product_manager.get_healthier_product_by_category()
+
 
 # 1 - Quel aliment souhaitez-vous remplacer ?
 #     Sélectionnez la catégorie.
@@ -59,3 +71,6 @@ main_manager.populate_tables()
 #     affiche la liste des aliments substitués
 #         l'utilisateur sélectionne un chiffre et appuie sur entrée' \
 #             affichage de l'aliment sélectionné'
+
+
+print("ran in {}s".format(time.time() - start_time))

@@ -1,4 +1,5 @@
 from dbmanagement.database import db
+import time
 
 
 class ProductManager:
@@ -17,14 +18,14 @@ class ProductManager:
         # creation des tables d'association
         db.query(""" CREATE TABLE IF NOT EXISTS Product_category (
                             id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-                            product_barcode BIGINT UNSIGNED UNIQUE,
-                            category_id INT NOT NULL,
+                            product_barcode BIGINT UNSIGNED,
+                            category_id BIGINT UNSIGNED,
 
                             CONSTRAINT fk_productbarcode_barcode 
                                 FOREIGN KEY (product_barcode)
                                 REFERENCES Product(barcode),
                             CONSTRAINT fk_categoryid_id
-                                FOREIGN KEY (product_barcode)
+                                FOREIGN KEY (category_id)
                                 REFERENCES Category(id));
                             """)
         db.query(""" CREATE TABLE IF NOT EXISTS Product_store(
@@ -43,7 +44,9 @@ class ProductManager:
 
     def insert_products(self, data):
         # pour chaque produit dans data
+        start_it_time = time.time()
         for product in data:
+
             # insérer le produit en base
             # print("insertion dans Product")
             db.query("""INSERT INTO Product(barcode, product_name, nutriscore,
@@ -57,6 +60,8 @@ class ProductManager:
             # pour chaque store dans dans product on insert le store_name dans store:
             # print("insertion dans Store")
             for store_name in product["store"]:
+
+
                 db.query("""INSERT INTO Store(id, store_name)
                             VALUES(null, :store_name)
                             ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), 
@@ -75,17 +80,40 @@ class ProductManager:
                     ;
                     """,
                     barcode=barcode, store_id=store_id,
-                    # **product,
                 )
 
-            # # Insérer la catégorie dans Category
-            # self.categorymanager.insert_category(product["category"])
+            for category in product["category"]:
+                db.query("""INSERT INTO Category(id, category_name)
+                            VALUES(null, :category)
+                            ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), 
+                            category_name=:category;""",
+                         category=category, )
 
+                category_id = None
+                for row in db.query("""SELECT LAST_INSERT_ID() as id"""):
+                    category_id = row["id"]
+                barcode = product["barcode"]
+
+                db.query(
+                    """
+                    INSERT INTO Product_category(product_barcode, category_id)
+                    values (:barcode, :category_id)
+                    ;
+                    """,
+                    barcode=barcode, category_id=category_id,
+                )
+        print("all iteration ran in {}s".format(time.time() - start_it_time))
         print("fin")
 
     def get_unhealthy_prod_by_category(self, category):
         """ retrieve 10 bad ratings products by user's selected category"""
-        pass
+        for row in db.query("""SELECT Product.barcode, Product.nutriscore
+                    FROM Product_category
+                    INNER JOIN Product_category.category_id ON Category.id
+                    INNER JOIN Product_category.product_barcode ON Product_barcode
+                    where Product.nutriscore = 'd'""",):
+            print(row)
+
 
     def get_healthier_product_by_category(self, category):
         """get a A or B rated randomized product to substitute to the unhealthy one selected"""

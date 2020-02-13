@@ -9,17 +9,8 @@ class CategoryManager:
                           category_name VARCHAR(255) UNIQUE);
                       """)
 
-    def insert_category(self, category):
-
-        db.query(""" INSERT INTO Category(category_name) 
-                        VALUES (:category) ON DUPLICATE
-                        KEY UPDATE category_name=:category ;
-                    """, category=category)
-
-        # Insérer dans la table d'association Product_Category
-        db.query("""INSERT INTO Product_category(id, product_barcode, category_id)
-                    VALUES(null, :barcode, :category_id) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), barcode=:barcode, ;
-                    """, barcode=product["barcode"], category_id=rows)
+    def insert_category(self, data):
+        pass
 
     def get_category(self):
         category = None
