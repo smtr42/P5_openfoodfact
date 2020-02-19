@@ -81,47 +81,69 @@ class ProductManager:
                     barcode=barcode, store_id=store_id,
                 )
 
-            for category in product["category"]:
-                db.query("""INSERT INTO Category(id, category_name)
-                            VALUES(null, :category)
-                            ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), 
-                            category_name=:category;""",
-                         category=category, )
+            category = product["category"]
+            db.query("""INSERT INTO Category(id, category_name)
+                        VALUES(null, :category)
+                        ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), 
+                        category_name=:category;""",
+                     category=category, )
 
-                category_id = None
-                for row in db.query("""SELECT LAST_INSERT_ID() as id"""):
-                    category_id = row["id"]
-                barcode = product["barcode"]
+            category_id = None
+            for row in db.query("""SELECT LAST_INSERT_ID() as id"""):
+                category_id = row["id"]
+            barcode = product["barcode"]
 
-                db.query(
-                    """
-                    INSERT INTO Product_category(product_barcode, category_id)
-                    values (:barcode, :category_id)
-                    ;
-                    """,
-                    barcode=barcode, category_id=category_id,
-                )
+            db.query(
+                """
+                INSERT INTO Product_category(product_barcode, category_id)
+                values (:barcode, :category_id)
+                ;
+                """,
+                barcode=barcode, category_id=category_id,
+            )
         print("all iteration ran in {}s".format(time.time() - start_it_time))
         print("fin")
 
     def get_unhealthy_prod_by_category(self, category):
-        """ retrieve 10 bad ratings products by user's selected category"""
+        """ retrieve bad rated products by user's selected category"""
         input_category = category
-
+        unhealthy_prod_by_cat = {}
+        i = 1
         for row in db.query("""SELECT Product.product_name
                     FROM Product
                     INNER JOIN Product_category AS pc ON Product.barcode = pc.product_barcode
                     INNER JOIN Category  ON  pc.category_id = Category.id
 
-                    WHERE Category.category_name = "Fromages" AND Product.nutriscore = 'e' """):
-            print(row)
+                    WHERE Category.category_name = :input_category AND 
+                    (Product.nutriscore = 'e' OR Product.nutriscore= 'd')
+                    ORDER BY RAND() LIMIT 5
+                    ;""", input_category=input_category):
+            unhealthy_prod_by_cat[i] = row["product_name"]
+            i += 1
+        return unhealthy_prod_by_cat
 
     def get_healthier_product_by_category(self, category):
         """get a A or B rated randomized product to substitute to the unhealthy one selected"""
+        input_category = category
+        healthy_prod_by_cat = {}
+        i = 1
+        for row in db.query("""SELECT Product.product_name
+                    FROM Product
+                    INNER JOIN Product_category AS pc ON Product.barcode = pc.product_barcode
+                    INNER JOIN Category  ON  pc.category_id = Category.id
+
+                    WHERE Category.category_name = :input_category AND 
+                    (Product.nutriscore = 'a' OR Product.nutriscore= 'b')
+                    ORDER BY RAND() LIMIT 5
+                    ;""", input_category=input_category):
+            healthy_prod_by_cat[i] = row["product_name"]
+            i += 1
+        return healthy_prod_by_cat
+
+    def save_healthy_product_to_favory(self):
         pass
 
-    def get_product_by_barcode(self, barcode):
-        """ return the product full description after user selected a product"""
+    def get_product_by_name(self, name):
         pass
 
 

@@ -69,7 +69,7 @@ class Machine(object):
                 return ui
 
     def exit_program(self):
-        i = 3
+        i = 1
         os.system('cls' if os.name == 'nt' else 'clear')
         print("The program will quit in ", i, "s"
                                               "\n"

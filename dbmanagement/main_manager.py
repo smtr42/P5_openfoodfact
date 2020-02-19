@@ -35,7 +35,7 @@ class MainManager:
 
 
 start_time = time.time()
-print("starting ")
+print("starting main_manager")
 
 dataclean = Cleaner()
 
@@ -45,11 +45,12 @@ favorite_manager = FavoriteManager()
 store_manager = StoreManager()
 main_manager = MainManager()
 
-main_manager.drop_tables()
-main_manager.create_tables()
-main_manager.populate_tables()
+# print("Ditching old database")
+# main_manager.drop_tables()
+# print("Creating new databse and filling it")
+# main_manager.create_tables()
+# main_manager.populate_tables()
 
-# product_manager.get_unhealthy_prod_by_category("Fromages")
 
 
 # 1 - Quel aliment souhaitez-vous remplacer ?

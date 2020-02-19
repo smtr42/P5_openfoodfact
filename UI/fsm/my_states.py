@@ -5,7 +5,6 @@ import dbmanagement.main_manager as manager
 
 class StartMenu(State):
     def __init__(self):
-        super().__init__()
         self.menu = {
             1: CategoryMenu,
             2: FavMenu,
@@ -40,7 +39,7 @@ class CategoryMenu(State):
 
     def get_random_cat(self):
         # aller récupérer la fonction dans le manager
-        cat_list = {1: "fromage", 2: "vin", 3: "pizza", 4: "snack", 5: "soda"}
+        cat_list = {1: "Fromages", 2: "Desserts", 3: "Viandes", 4: "Chocolats", 5: "####"}
         return cat_list
 
 
@@ -56,39 +55,71 @@ class ProductMenu(State):
     def on_event(self, event):
         if event == "bck":
             return self
+        elif event in self.menu.keys():
+            return ShowSubProduct(self.menu[event], self.selected_cat)
         return self
 
     def get_product_by_category(self):
-        a = manager
-        # aller récupérer la fonction dans le manager en fonction category
-        prod_list = {1: "camembert", 2: "vieux pané", 3: "st felicien",
-                     4: "gruyère", 5: "morbier"}
+        category = self.selected_cat
+        prod_list = manager.product_manager.get_unhealthy_prod_by_category(
+            category)
         return prod_list
 
 
-class ShowProduct(State):
+class SubProductMenu(State):
+    def __init__(self, selected_prod, selected_cat):
+        self.selected_prod = selected_prod
+        self.selected_cat = selected_cat
+        self.menu = self.get_healthier_product()
 
     def show(self):
-        print("Description of item you selected :")
-        # affichage du produit
-        print("To add this item to you favorite write exactly down 'fav' \n"
-              "To go back to the precedent menu write 'r'")
-        pass
+        print("Here is a list of much better food than the one you selected")
+        for item in self.menu:
+            print(f"{item}. {self.menu[item]}")
+        print("\n "
+              "Write a number to see the detail of the product")
 
     def on_event(self, event):
-        if event == "add_fav":
-            # function add product to favorite
-            pass
+        if event == "fav":
+            return self
+        elif event in self.menu.keys():
+            return ShowProduct(self.menu[event], self.selected_prod,
+                               self.selected_cat)
+
         # possibilité de sauvegarder
         # possibilité de voir les fav
         pass
 
-    def get_product_data(self):
-        # à récupérer dans le manager
+    def get_healthier_product(self):
+
+        prod_list = manager.product_manager.get_healthier_product_by_category(
+            self.selected_cat)
+        return prod_list
+        pass
+
+
+class ShowProduct(State):
+    def __init__(self, event, prod, cat):
+        self.event = event
+        self.prod = prod
+        self.cat = cat
+
+    def show(self):
+
+        pass
+
+    def on_event(self, event):
+        pass
+
+    def get_product(self):
+        product = {}
+
+        return product
         pass
 
     def save_product_into_fav(self):
         # à récupérer dans le manager
+        manager.product_manager.save_healthy_product_to_favory()
         pass
 
 
