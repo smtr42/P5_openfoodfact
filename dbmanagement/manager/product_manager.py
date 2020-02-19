@@ -61,7 +61,6 @@ class ProductManager:
             # print("insertion dans Store")
             for store_name in product["store"]:
 
-
                 db.query("""INSERT INTO Store(id, store_name)
                             VALUES(null, :store_name)
                             ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), 
@@ -107,13 +106,15 @@ class ProductManager:
 
     def get_unhealthy_prod_by_category(self, category):
         """ retrieve 10 bad ratings products by user's selected category"""
-        for row in db.query("""SELECT Product.barcode, Product.nutriscore
-                    FROM Product_category
-                    INNER JOIN Product_category.category_id ON Category.id
-                    INNER JOIN Product_category.product_barcode ON Product_barcode
-                    where Product.nutriscore = 'd'""",):
-            print(row)
+        input_category = category
 
+        for row in db.query("""SELECT Product.product_name
+                    FROM Product
+                    INNER JOIN Product_category AS pc ON Product.barcode = pc.product_barcode
+                    INNER JOIN Category  ON  pc.category_id = Category.id
+
+                    WHERE Category.category_name = "Fromages" AND Product.nutriscore = 'e' """):
+            print(row)
 
     def get_healthier_product_by_category(self, category):
         """get a A or B rated randomized product to substitute to the unhealthy one selected"""
@@ -122,3 +123,5 @@ class ProductManager:
     def get_product_by_barcode(self, barcode):
         """ return the product full description after user selected a product"""
         pass
+
+

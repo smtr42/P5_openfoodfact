@@ -1,4 +1,4 @@
-from .my_states import StartMenu
+from .my_states import StartMenu, ProductMenu
 import os
 import time
 import sys
@@ -17,6 +17,7 @@ class Machine(object):
         self.state = StartMenu()
         self.start_menu = self.state
         self.back_menu = None
+        self.product_menu = None
 
     def show(self):
         self.state.show()
@@ -52,6 +53,8 @@ class Machine(object):
                 elif ui == "m":
                     self.go_start()
                     return "strtmnu"
+                elif ui == "fav" and self.state == ProductMenu:
+                    return "add_fav"
                 else:
                     print(input_error_message)
                     self.show()
@@ -70,7 +73,9 @@ class Machine(object):
         os.system('cls' if os.name == 'nt' else 'clear')
         print("The program will quit in ", i, "s"
                                               "\n"
-                                              "Your favorites are permanently saved in the database")
+                                              "Your favorites are permanently saved in the database"
+                                              "\n"
+                                              "Thanks for using this program !")
         while i >= 0:
             print(i, "s")
             time.sleep(1)

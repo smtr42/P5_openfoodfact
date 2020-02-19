@@ -29,33 +29,27 @@ class MainManager:
 
     def populate_tables(self):
         product_manager.insert_products(self.data)
-        # data = self.data
-        # for product in data:
-        #     category_manager.insert_category(*product)
-        #     # product_manager.insert_products(*product)
-        #     # store_manager.insert_store(*product)
+
+
+
 
 
 start_time = time.time()
 print("starting ")
 
 dataclean = Cleaner()
-print("dataclean ran in {}s".format(time.time() - start_time))
 
 category_manager = CategoryManager()
 product_manager = ProductManager(Product)
 favorite_manager = FavoriteManager()
 store_manager = StoreManager()
-print("instanciation ran in {}s".format(time.time() - start_time))
-
 main_manager = MainManager()
+
 main_manager.drop_tables()
 main_manager.create_tables()
-print("create table  ran in {}s".format(time.time() - start_time))
 main_manager.populate_tables()
-print("main manager  ran in {}s".format(time.time() - start_time))
 
-product_manager.get_healthier_product_by_category()
+# product_manager.get_unhealthy_prod_by_category("Fromages")
 
 
 # 1 - Quel aliment souhaitez-vous remplacer ?

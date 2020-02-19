@@ -1,17 +1,19 @@
 # my_states.py
 from .state import State
+import dbmanagement.main_manager as manager
 
-# Start of our states
+
 class StartMenu(State):
     def __init__(self):
+        super().__init__()
         self.menu = {
             1: CategoryMenu,
             2: FavMenu,
         }
 
     def show(self):
-        print("1. Which food would you like to substitute ?\n"
-              "2. Find my favorites healthy food\n")
+        print("1. Search for food you wich to substitute\n"
+              "2. Find my saved favorites healthy food\n")
 
     def on_event(self, event):
         if event == "strtmnu":
@@ -55,9 +57,9 @@ class ProductMenu(State):
         if event == "bck":
             return self
         return self
-        pass
 
     def get_product_by_category(self):
+        a = manager
         # aller récupérer la fonction dans le manager en fonction category
         prod_list = {1: "camembert", 2: "vieux pané", 3: "st felicien",
                      4: "gruyère", 5: "morbier"}
@@ -67,10 +69,16 @@ class ProductMenu(State):
 class ShowProduct(State):
 
     def show(self):
+        print("Description of item you selected :")
+        # affichage du produit
+        print("To add this item to you favorite write exactly down 'fav' \n"
+              "To go back to the precedent menu write 'r'")
         pass
 
-    def on_event(self):
-        # affichage du produit
+    def on_event(self, event):
+        if event == "add_fav":
+            # function add product to favorite
+            pass
         # possibilité de sauvegarder
         # possibilité de voir les fav
         pass
