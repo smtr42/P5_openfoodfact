@@ -56,7 +56,7 @@ class ProductMenu(State):
         if event == "bck":
             return self
         elif event in self.menu.keys():
-            return ShowSubProduct(self.menu[event], self.selected_cat)
+            return SubProductMenu(self.menu[event], self.selected_cat)
         return self
 
     def get_product_by_category(self):
@@ -101,7 +101,7 @@ class SubProductMenu(State):
 class ShowProduct(State):
     def __init__(self, event, prod, cat):
         self.event = event
-        self.prod = prod
+        self.product_name = prod
         self.cat = cat
 
     def show(self):
@@ -113,7 +113,7 @@ class ShowProduct(State):
 
     def get_product(self):
         product = {}
-
+        manager.product_manager.get_product_by_name(self.product_name)
         return product
         pass
 

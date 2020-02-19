@@ -9,16 +9,4 @@ class CategoryManager:
                           category_name VARCHAR(255) UNIQUE);
                       """)
 
-    def insert_category(self, data):
-        pass
-
-    def get_category(self, category):
-        category = None
-        for row in db.query("""SELECT * FROM Category as category"""):
-            category = row["category"]
-        return category
-
-    def get_elements_from_category(self):
-        db.query("""SELECT * FROM Product WHERE N
-        """)
 

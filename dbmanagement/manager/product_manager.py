@@ -144,6 +144,16 @@ class ProductManager:
         pass
 
     def get_product_by_name(self, name):
+        input_name = name
+        prod_by_name = {}
+        for row in db.query("""SELECT Product.name, Product.nutriscore, Product.url, Product.barcode, Store.store_name
+                    FROM Product
+                    INNER JOIN Product_store AS ps ON ps.product_barcode=Product.barcode
+                    INNER JOIN Store ON Store.id=ps.store_id
+                    WHERE Product.product_name = :input_name;
+                    """, input_name=input_name):
+            print(row)
+        return prod_by_name
         pass
 
 
