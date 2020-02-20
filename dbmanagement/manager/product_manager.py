@@ -1,6 +1,6 @@
 from dbmanagement.database import db
 import time
-
+from tqdm import tqdm
 
 class ProductManager:
 
@@ -45,7 +45,7 @@ class ProductManager:
     def insert_products(self, data):
         # pour chaque produit dans data
         start_it_time = time.time()
-        for product in data:
+        for product in tqdm(data, desc="Inserting products in database", total=len(data)):
 
             # insérer le produit en base
             # print("insertion dans Product")
@@ -125,9 +125,9 @@ class ProductManager:
     def get_healthier_product_by_category(self, category):
         """get a A or B rated randomized product to substitute to the unhealthy one selected"""
         input_category = category
-        healthy_prod_by_cat = {}
+        healthy_prod_by_cat, data = {}, {}
         i = 1
-        for row in db.query("""SELECT Product.product_name
+        for row in db.query("""SELECT Product.product_name, Product.barcode
                     FROM Product
                     INNER JOIN Product_category AS pc ON Product.barcode = pc.product_barcode
                     INNER JOIN Category  ON  pc.category_id = Category.id
@@ -137,8 +137,9 @@ class ProductManager:
                     ORDER BY RAND() LIMIT 5
                     ;""", input_category=input_category):
             healthy_prod_by_cat[i] = row["product_name"]
+            data[row["barcode"]]=row["product_name"]
             i += 1
-        return healthy_prod_by_cat
+        return healthy_prod_by_cat, data
 
     def save_healthy_product_to_favory(self):
         pass

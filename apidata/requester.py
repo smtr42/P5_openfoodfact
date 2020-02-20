@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 import requests
 import json
+
+from tqdm import tqdm
+from time import sleep
+
 from configuration import constant
 
 
@@ -16,12 +20,11 @@ class RequestData:
     def fetch_category(self):
         """ fetch the categories"""
         """Request the list of category from the API"""
-        print("Requesting Categories - Please wait")
+        print("Initialization - Please wait")
         try:
             response = self.req(self.cat_url)
             data = json.loads(response.text)
             self.list_cat = [i['name'] for i in data['tags']]
-            print("Success ! Categories loaded")
 
         except requests.exceptions.Timeout as t:
             print("Request Timeout, please retry : ", t)
@@ -36,9 +39,9 @@ class RequestData:
 
     def fetch_products(self):
         """Request the products in respect for the categories loaded"""
-        print("Requesting Products - Please wait")
+        print("API connexion and data transfer  - Please wait")
         all_products = {}
-        for category in self.list_cat:
+        for category in tqdm(self.list_cat, total=len(self.list_cat)):
             config = {"action": "process",
                       # Get the result by category
                       "tagtype_0": "categories",
@@ -53,9 +56,10 @@ class RequestData:
             response = self.req(self.search_url, param=config)
             data = response.json()
             all_products[category] = data
-
+        print("Raw data is now downloaded successfully")
+        print("Now saving...")
         self.prod_to_json(all_products)
-        print("products download and write success")
+        print("Success")
 
     def req(self, url, param=None):
         """ small request function used multiple times"""
@@ -74,19 +78,7 @@ class RequestData:
                   'w') as f:  # writing JSON object
             json.dump(obj, f)
 
-    # def filter_category(self):
-    #     """Filter category"""
-    #     lister = []
-    #
-    #     for name in self.list_cat:
-    #         if ':' not in name:
-    #             temp = name.replace('-', ' ').replace('\'', ' ')
-    #             lister.append(temp)
-    #
-    #     sampling = random.sample(lister, 20)
-    #     self.list_cat = sampling
 
-
-rd = RequestData()
-rd.fetch_category()
-rd.fetch_products()
+# rd = RequestData()
+# rd.fetch_category()
+# rd.fetch_products()

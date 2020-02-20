@@ -7,8 +7,6 @@ from dbmanagement.manager.product_manager import ProductManager
 from dbmanagement.manager.favorite_manager import FavoriteManager
 from dbmanagement.manager.store_manager import StoreManager
 
-import time
-
 
 class MainManager:
     def __init__(self):
@@ -31,41 +29,24 @@ class MainManager:
         product_manager.insert_products(self.data)
 
 
+def run():
 
+    dataclean = Cleaner()
 
+    category_manager = CategoryManager()
+    product_manager = ProductManager(Product)
+    favorite_manager = FavoriteManager()
+    store_manager = StoreManager()
+    main_manager = MainManager()
 
-start_time = time.time()
-print("starting main_manager")
-
-dataclean = Cleaner()
-
-category_manager = CategoryManager()
-product_manager = ProductManager(Product)
-favorite_manager = FavoriteManager()
-store_manager = StoreManager()
-main_manager = MainManager()
-
-# print("Ditching old database")
-# main_manager.drop_tables()
-# print("Creating new databse and filling it")
-# main_manager.create_tables()
-# main_manager.populate_tables()
-
-
-
-# 1 - Quel aliment souhaitez-vous remplacer ?
-#     Sélectionnez la catégorie.
-#         afficher 5 propositions
-#         utilisateur séléectionne un chiffre et appuie sur entrée
-#             Afficher 5 mauvais aliments de la catégorie précédemment sélectionnée
-#             utilisateur sélectionne un chiffre et appuie sur entrée
-#             afficher un substitut et son détail
-#                 proposer la possiblité d'enregistrer l'aliment dans les favoris
-#                 proposer de revenir au menu
-# 2 - Retrouver mes aliments substitués.
-#     affiche la liste des aliments substitués
-#         l'utilisateur sélectionne un chiffre et appuie sur entrée' \
-#             affichage de l'aliment sélectionné'
-
-
-print("ran in {}s".format(time.time() - start_time))
+    answer = input(
+        "Would you like to erase all the tables and fill them again ? Press 'y' if "
+        "that's the case, press any key to use pre-existing database.")
+    if answer == 'y':
+        print("Ditching old database")
+        main_manager.drop_tables()
+        print("Creating new tables and filling it")
+        main_manager.create_tables()
+        main_manager.populate_tables()
+    else:
+        pass

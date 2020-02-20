@@ -74,8 +74,8 @@ class SubProductMenu(State):
 
     def show(self):
         print("Here is a list of much better food than the one you selected")
-        for item in self.menu:
-            print(f"{item}. {self.menu[item]}")
+        for item in self.menu[0]:
+            print(f"{item}. {self.menu[0][item]}")
         print("\n "
               "Write a number to see the detail of the product")
 

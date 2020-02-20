@@ -10,6 +10,8 @@ requests = "*"
 pymysql = "*"
 records = "*"
 mysql-connector-python = "*"
+tqdm = "*"
+progressbar2 = "*"
 
 [requires]
 python_version = "3.7"

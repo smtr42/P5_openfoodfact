@@ -1,5 +1,6 @@
 import json
 import os
+
 from configuration import constant
 
 
@@ -19,8 +20,11 @@ class Cleaner:
     def filter_product(self):
         """  get the data from json files and run checks"""
         this_folder = os.path.dirname(os.path.abspath(__file__))
-        my_file = os.path.join(this_folder, 'localdata/products_fr.json')
-        with open(my_file) as json_file:
+        try:
+            my_file = os.path.join(this_folder, 'localdata/products_fr.json')
+        except:
+            print("You might have not downloaded the data...")
+        with open(my_file, 'r') as json_file:
             data = json.load(json_file)
             for category in self.list_cat:
                 products_s = data[category]['products']
