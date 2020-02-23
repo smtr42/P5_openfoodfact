@@ -35,11 +35,13 @@ class Machine(object):
 
     def input_checker(self):
         input_error_message = ("\n"
-                               "!! write down one of the number on the screen !!"
+                               "!! write down one of the number on the screen "
+                               "!!"
                                "\n")
         while True:
             ui = input(
-                """Choose the menu you want to access by writing the line's number :
+                """Choose the menu you want to access by writing the line's 
+                number :
             Go back is 'r', quit is 'q'
 =>""")
             try:
@@ -73,7 +75,8 @@ class Machine(object):
         os.system('cls' if os.name == 'nt' else 'clear')
         print("The program will quit in ", i, "s"
                                               "\n"
-                                              "Your favorites are permanently saved in the database"
+                                              "Your favorites are permanently "
+                                              "saved in the database"
                                               "\n"
                                               "Thanks for using this program !")
         while i >= 0:

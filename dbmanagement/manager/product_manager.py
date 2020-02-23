@@ -2,6 +2,7 @@ from dbmanagement.database import db
 import time
 from tqdm import tqdm
 
+
 class ProductManager:
 
     def __init__(self, product):
@@ -43,7 +44,8 @@ class ProductManager:
                             """)
 
     def insert_products(self, data):
-        # pour chaque produit dans data
+        """Elements insertion in database in tables product, Category, Product_category, Store, Product_store"""
+
         start_it_time = time.time()
         for product in tqdm(data, desc="Inserting products in database", total=len(data)):
 
@@ -137,7 +139,7 @@ class ProductManager:
                     ORDER BY RAND() LIMIT 5
                     ;""", input_category=input_category):
             healthy_prod_by_cat[i] = row["product_name"]
-            data[row["barcode"]]=row["product_name"]
+            data[row["barcode"]] = row["product_name"]
             i += 1
         return healthy_prod_by_cat, data
 
@@ -157,4 +159,16 @@ class ProductManager:
         return prod_by_name
         pass
 
-
+#  !!!!! CRITICAL !!! modify writing in json file and store it in variable
+# add this in trello
+# modify retrieve product by name and replace by barcode
+# transfert barcode to other states for better retrieval
+# move function i product manager to better suited manager i.e store, category
+# docstring
+# pep8, flake8, black, docstring, import
+# write down how to in the readme to use MySQL database and how to modify user and pwd
+# modify trello board in accordance
+# write the pdf 2 pages max
+# prepare SQL graph and relations between tables
+# Bonus : add multiple category by products for better accuracy when searching
+#

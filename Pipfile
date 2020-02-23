@@ -12,6 +12,7 @@ records = "*"
 mysql-connector-python = "*"
 tqdm = "*"
 progressbar2 = "*"
+colorful = "*"
 
 [requires]
 python_version = "3.7"

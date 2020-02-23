@@ -1,7 +1,8 @@
 import os
+import colorful as cf
 from apidata.requester import RequestData
 from dbmanagement import main_manager
-print("""\
+print(""""\
    ____                   ______              _  __           _
   / __ \                 |  ____|            | |/ _|         | |
  | |  | |_ __   ___ _ __ | |__ ___   ___   __| | |_ __ _  ___| |_
@@ -28,7 +29,8 @@ if not os.path.exists(data_file):
 
 answer =input("Do you want to transfert data from the API ? It's MANDATORY for your first utilisation and good program execution"
       "\n"
-      "Press 'y' to do so, otherwise press any other key to continue")
+      "Press 'y' to do so, otherwise press any other key to continue"
+      "\n :")
 
 if answer == 'y':
     rd = RequestData()
