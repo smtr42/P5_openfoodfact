@@ -34,16 +34,15 @@ class Machine(object):
         self.state = self.state.on_event(event)
 
     def input_checker(self):
-        input_error_message = ("\n"
-                               "!! write down one of the number on the screen "
-                               "!!"
-                               "\n")
+        input_error_message = \
+            ("\n"
+             "!! write down one of the number on the screen !!"
+             "\n")
+
         while True:
             ui = input(
                 """Choose the menu you want to access by writing the line's 
-                number :
-            Go back is 'r', quit is 'q'
-=>""")
+number : Go back is 'r', quit is 'q' \n => """)
             try:
                 ui = int(ui)
             except ValueError:
@@ -73,12 +72,11 @@ class Machine(object):
     def exit_program(self):
         i = 1
         os.system('cls' if os.name == 'nt' else 'clear')
-        print("The program will quit in ", i, "s"
-                                              "\n"
-                                              "Your favorites are permanently "
-                                              "saved in the database"
-                                              "\n"
-                                              "Thanks for using this program !")
+        print(  "The program will quit in ", i, "s"
+                "\n"
+                "Your favorites are permanently saved in the database"
+                "\n"
+                "Thanks for using this program !")
         while i >= 0:
             print(i, "s")
             time.sleep(1)

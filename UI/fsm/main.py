@@ -1,6 +1,7 @@
 from .machine import Machine
+import colorful as cf
 
-print("""\
+print(cf.green("""\
    ____                   ______              _  __           _
   / __ \                 |  ____|            | |/ _|         | |
  | |  | |_ __   ___ _ __ | |__ ___   ___   __| | |_ __ _  ___| |_
@@ -9,13 +10,11 @@ print("""\
   \____/| .__/ \___|_| |_|_|  \___/ \___/ \__,_|_| \__,_|\___|\__|
         | |
         |_|
-      """
-      "\n"
-      "Welcome, write down a number to access the desired line \n"
-      "\n"
-      "To QUIT the program write 'q', to GO BACK to the last menu write 'r'"
-      "\n"
-      "")
+      """))
+
+print(cf.green("\n"
+      "     Welcome, write down a number to access the desired line \n"
+      "\n"))
 
 device = Machine()
 while True:

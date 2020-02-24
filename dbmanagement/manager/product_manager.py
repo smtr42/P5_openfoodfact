@@ -61,6 +61,7 @@ class ProductManager:
 
             # pour chaque store dans dans product on insert le store_name dans store:
             # print("insertion dans Store")
+
             for store_name in product["store"]:
 
                 db.query("""INSERT INTO Store(id, store_name)
@@ -159,16 +160,7 @@ class ProductManager:
         return prod_by_name
         pass
 
-#  !!!!! CRITICAL !!! modify writing in json file and store it in variable
-# add this in trello
 # modify retrieve product by name and replace by barcode
 # transfert barcode to other states for better retrieval
 # move function i product manager to better suited manager i.e store, category
-# docstring
-# pep8, flake8, black, docstring, import
-# write down how to in the readme to use MySQL database and how to modify user and pwd
-# modify trello board in accordance
-# write the pdf 2 pages max
-# prepare SQL graph and relations between tables
 # Bonus : add multiple category by products for better accuracy when searching
-#
