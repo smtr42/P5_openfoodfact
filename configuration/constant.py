@@ -8,5 +8,5 @@ CATEGORIES = ["Fromages",
               "Viandes",
               "Chocolats",]
 
-PRODUCT_NUMBER = 1000
+PRODUCT_NUMBER = 100
 

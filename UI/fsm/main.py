@@ -11,13 +11,19 @@ print(cf.green("""\
         | |
         |_|
       """))
-
+print("\n"
+      "Welcome \n"
+      "\n"
+      "You must have a functional database and put your credentials into the "
+      "configuration file in configuration/constant.py before using this script"
+      "\n"
+      "For mor information you are strongly advised to read the readme")
 print(cf.green("\n"
-      "     Welcome, write down a number to access the desired line \n"
-      "\n"))
+         "Write down a number to access the desired line \n"
+         "\n"))
 
 device = Machine()
-while True:
-    device.show()
-    event = device.input_checker()
-    device.on_event(event)
+# while True:
+#     device.show()
+#     event = device.input_checker()
+#     device.on_event(event)

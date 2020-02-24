@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 import json
-
+import colorful as cf
 from tqdm import tqdm
 from time import sleep
 
@@ -39,7 +39,8 @@ class RequestData:
 
     def fetch_products(self):
         """Request the products in respect for the categories loaded"""
-        print("API connexion and data transfer  - Please wait")
+        print("API connexion and data transfer  - Please wait... \n"
+              "It should takes less than a minute \n \n")
         all_products = {}
         for category in tqdm(self.list_cat, total=len(self.list_cat)):
             config = {"action": "process",
@@ -56,10 +57,10 @@ class RequestData:
             response = self.req(self.search_url, param=config)
             data = response.json()
             all_products[category] = data
-        print("Raw data is now downloaded successfully")
+        print("\n Raw data is now downloaded successfully")
         print("Now saving...")
         self.prod_to_json(all_products)
-        print("Success")
+        print(cf.green("Success !"))
 
     def req(self, url, param=None):
         """ small request function used multiple times"""

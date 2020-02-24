@@ -1,6 +1,8 @@
 from dbmanagement.database import db
-import time
 from tqdm import tqdm
+from dbmanagement.models import Product
+from dbmanagement.manager.store_manager import StoreManager
+from dbmanagement.manager.category_manager import CategoryManager
 
 
 class ProductManager:
@@ -44,13 +46,11 @@ class ProductManager:
                             """)
 
     def insert_products(self, data):
-        """Elements insertion in database in tables product, Category, Product_category, Store, Product_store"""
+        """Elements insertion in database in tables product, Category,
+        Product_category, Store, Product_store"""
 
-        start_it_time = time.time()
         for product in tqdm(data, desc="Inserting products in database", total=len(data)):
 
-            # insérer le produit en base
-            # print("insertion dans Product")
             db.query("""INSERT INTO Product(barcode, product_name, nutriscore,
                                                                             url)
                         VALUES (:barcode, :product_name,:nutriscore, :url) 
@@ -59,53 +59,21 @@ class ProductManager:
                             nutriscore=:nutriscore, url=:url;
                         """, **product)
 
-            # pour chaque store dans dans product on insert le store_name dans store:
-            # print("insertion dans Store")
-
             for store_name in product["store"]:
+                StoreManager.insert_into_store(store_name)
+                barcode, store_id = self.last_insert_id(product)
+                StoreManager.insert_into_product_store(barcode, store_id)
 
-                db.query("""INSERT INTO Store(id, store_name)
-                            VALUES(null, :store_name)
-                            ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), 
-                            store_name=store_name;""",
-                         store_name=store_name.strip(), )
+            CategoryManager.insert_into_category(product)
+            barcode, category_id = self.last_insert_id(product)
+            CategoryManager.insert_into_product_category(barcode, category_id)
 
-                store_id = None
-                for row in db.query("""SELECT LAST_INSERT_ID() as id"""):
-                    store_id = row["id"]
-                barcode = product["barcode"]
-
-                db.query(
-                    """
-                    INSERT INTO Product_store(product_barcode, store_id)
-                    values (:barcode, :store_id)
-                    ;
-                    """,
-                    barcode=barcode, store_id=store_id,
-                )
-
-            category = product["category"]
-            db.query("""INSERT INTO Category(id, category_name)
-                        VALUES(null, :category)
-                        ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), 
-                        category_name=:category;""",
-                     category=category, )
-
-            category_id = None
-            for row in db.query("""SELECT LAST_INSERT_ID() as id"""):
-                category_id = row["id"]
-            barcode = product["barcode"]
-
-            db.query(
-                """
-                INSERT INTO Product_category(product_barcode, category_id)
-                values (:barcode, :category_id)
-                ;
-                """,
-                barcode=barcode, category_id=category_id,
-            )
-        print("all iteration ran in {}s".format(time.time() - start_it_time))
-        print("fin")
+    def last_insert_id(self, product):
+        id = None
+        for row in db.query("""SELECT LAST_INSERT_ID() as id"""):
+            id = row["id"]
+        barcode = product["barcode"]
+        return barcode, id
 
     def get_unhealthy_prod_by_category(self, category):
         """ retrieve bad rated products by user's selected category"""
@@ -164,3 +132,5 @@ class ProductManager:
 # transfert barcode to other states for better retrieval
 # move function i product manager to better suited manager i.e store, category
 # Bonus : add multiple category by products for better accuracy when searching
+
+product_manager = ProductManager(Product)

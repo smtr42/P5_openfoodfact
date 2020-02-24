@@ -13,7 +13,6 @@ class State(object):
         """
         Handle events that are delegated to this State.
         """
-        print("on_event dans State")
         pass
 
     def __repr__(self):

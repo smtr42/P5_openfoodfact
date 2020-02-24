@@ -1,7 +1,6 @@
-# my_states.py
 from .state import State
-import dbmanagement.main_manager as manager
-
+# import dbmanagement.main_manager as manager
+from dbmanagement.manager.product_manager import product_manager
 
 class StartMenu(State):
     def __init__(self):
@@ -11,7 +10,8 @@ class StartMenu(State):
         }
 
     def show(self):
-        print("1. Search for food you wich to substitute\n"
+        print("\n"
+              "1. Search for food you which to substitute\n"
               "2. Find my saved favorites healthy food\n")
 
     def on_event(self, event):
@@ -61,7 +61,7 @@ class ProductMenu(State):
 
     def get_product_by_category(self):
         category = self.selected_cat
-        prod_list = manager.product_manager.get_unhealthy_prod_by_category(
+        prod_list = product_manager.get_unhealthy_prod_by_category(
             category)
         return prod_list
 
@@ -92,7 +92,7 @@ class SubProductMenu(State):
 
     def get_healthier_product(self):
 
-        prod_list = manager.product_manager.get_healthier_product_by_category(
+        prod_list = product_manager.get_healthier_product_by_category(
             self.selected_cat)
         return prod_list
         pass
@@ -113,13 +113,13 @@ class ShowProduct(State):
 
     def get_product(self):
         product = {}
-        manager.product_manager.get_product_by_name(self.product_name)
+        product_manager.get_product_by_name(self.product_name)
         return product
         pass
 
     def save_product_into_fav(self):
         # à récupérer dans le manager
-        manager.product_manager.save_healthy_product_to_favory()
+        main_manager.product_manager.save_healthy_product_to_favory()
         pass
 
 
