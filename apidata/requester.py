@@ -3,7 +3,6 @@ import requests
 import json
 import colorful as cf
 from tqdm import tqdm
-from time import sleep
 
 from configuration import constant
 
@@ -27,9 +26,9 @@ class RequestData:
             self.list_cat = [i['name'] for i in data['tags']]
 
         except requests.exceptions.Timeout as t:
-            print("Request Timeout, please retry : ", t)
+            print(cf.red("Request Timeout, please retry : ", t))
         except requests.exceptions.RequestException as err:
-            print("Something went bad, please retry : :", err)
+            print(cf.red("Something went bad, please retry : :", err))
 
         list_cat = constant.CATEGORIES
         resp = [x for x in self.list_cat if x in list_cat]
@@ -57,7 +56,7 @@ class RequestData:
             response = self.req(self.search_url, param=config)
             data = response.json()
             all_products[category] = data
-        print("\n Raw data is now downloaded successfully")
+        print(cf.green("\n Raw data is now downloaded successfully"))
         print("Now saving...")
         self.prod_to_json(all_products)
         print(cf.green("Success !"))
@@ -69,14 +68,12 @@ class RequestData:
 
     def categories_to_json(self, obj):
         """saving categories to a json files"""
-        with open('apidata/localdata/categories_fr.json',
-                  'w') as f:  # writing JSON object
+        with open('apidata/localdata/categories_fr.json','w') as f:
             json.dump(obj, f)
 
     def prod_to_json(self, obj):
         """save the products to a json file"""
-        with open('apidata/localdata/products_fr.json',
-                  'w') as f:  # writing JSON object
+        with open('apidata/localdata/products_fr.json','w') as f:
             json.dump(obj, f)
 
 

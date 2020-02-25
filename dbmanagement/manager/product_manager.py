@@ -1,3 +1,4 @@
+import colorful as cf
 from dbmanagement.database import db
 from tqdm import tqdm
 from dbmanagement.models import Product
@@ -111,6 +112,15 @@ class ProductManager:
             data[row["barcode"]] = row["product_name"]
             i += 1
         return healthy_prod_by_cat, data
+
+    def wipe_out(self):
+        print("Ditching old database...")
+        db.query(""" DROP TABLE IF EXISTS
+                          Product, Category, Store,
+                          Favorite, Product_category,
+                          Product_Store;
+                        """)
+        print(cf.green("Database is now clean !"))
 
     def save_healthy_product_to_favory(self):
         pass

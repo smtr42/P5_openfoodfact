@@ -1,5 +1,5 @@
-from .database import db
-from apidata.cleaner import Cleaner
+# from .database import db
+# from apidata.cleaner import Cleaner
 
 
 class Product:
@@ -10,17 +10,17 @@ class Product:
         self.url = url
 
 
-class Store:
-    def __init__(self, store_name, *args, **kwargs):
-        self.store_name = store_name
-
-
-class Category:
-    def __init__(self, category, *args, **kwargs):
-        self.category = category
-
-
-class Favorite:
-    def __init__(self, product_barcode, substitute_barcode, *args, **kwargs):
-        self.product_barcode = product_barcode
-        self.substitute_barcode = substitute_barcode
+# class Store:
+#     def __init__(self, store_name, *args, **kwargs):
+#         self.store_name = store_name
+#
+#
+# class Category:
+#     def __init__(self, category, *args, **kwargs):
+#         self.category = category
+#
+#
+# class Favorite:
+#     def __init__(self, product_barcode, substitute_barcode, *args, **kwargs):
+#         self.product_barcode = product_barcode
+#         self.substitute_barcode = substitute_barcode
