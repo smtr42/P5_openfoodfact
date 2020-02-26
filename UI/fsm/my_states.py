@@ -3,7 +3,7 @@ import colorful as cf
 # import dbmanagement.main_manager as manager
 from dbmanagement.manager.product_manager import product_manager
 from dbmanagement.manager.favorite_manager import favorite_manager
-
+from dbmanagement.manager.category_manager import CategoryManager
 
 class StartMenu(State):
     """The first State with the main menu. Two options are possibles."""
@@ -44,12 +44,7 @@ class CategoryMenu(State):
         return self
 
     def get_random_cat(self):
-        # aller récupérer la fonction dans le manager
-        cat_list = {1: "Fromages",
-                    2: "Desserts",
-                    3: "Viandes",
-                    4: "Chocolats",
-                    5: "####"}
+        cat_list = CategoryManager.get_cat()
         return cat_list
 
 
@@ -61,7 +56,6 @@ class ProductMenu(State):
         self.temp ={}
         self.selected_cat = selected_cat
         self.menu = self.get_product_by_category()
-
 
     def show(self):
         print("\n \n")
@@ -157,7 +151,6 @@ class ShowProduct(State):
                 self.product_name, self.category, self.uh_barcode)
 
     def get_product(self):
-        product = {}
         product = product_manager.get_product_by_barcode(self.barcode)
         return product
 
@@ -170,10 +163,21 @@ class ShowProduct(State):
 class FavMenu(State):
     """The Sate where you can access the list of favorites products"""
     def __init__(self):
-        pass
+        self.fav_name ={}
+        self.fav_barcode={}
+        self.menu = self.get_fav_by_barcode()
 
     def show(self):
-        # show the menu with the list
+        print(f"\n \n \n"
+              f"{self.full_product['product_name']} is a better food as it has"
+              f" a nutriscore graded {self.full_product['nutriscore']}."
+              f"\n You can buy it in these stores : "
+              f"{self.full_product['store_name']}"
+              f"\n For more information visit this url : "
+              f"{self.full_product['url']}")
+        print(cf.white("\n " + cf.red('Press q', nested=True) +
+                       " to quit, "
+                       + cf.red('press "r" ', nested=True) + "to go back\n \n \n"))
         pass
 
     def on_event(self, event):
@@ -181,7 +185,8 @@ class FavMenu(State):
         pass
 
     def get_fav_by_barcode(self):
-        pass
+        self.fav_name, self.fav_barcode = favorite_manager.get_all_favorite()
+        return self.fav_name
 
     def get_product(self):
         pass

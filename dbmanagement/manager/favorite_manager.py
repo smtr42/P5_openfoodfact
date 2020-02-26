@@ -29,15 +29,18 @@ class FavoriteManager:
 
     def get_all_favorite(self):
         """ retrieve all substitute saved by the user"""
-
-        for row in db.query("""SELECT Product.product_name, Product.nutriscore,
-         Product.url, Product.barcode, Store.store_name
-                            FROM Favorite
-                            INNER JOIN Favorite ON 
+        fav_name = {}
+        fav_barcode = {}
+        i = 1
+        for row in db.query("""SELECT Product.product_name, Product.barcode
+                            FROM Product
+                            INNER JOIN Favorite ON
                             Favorite.substitute_barcode=Product.barcode
-                            WHERE Product.barcode = :pbarcode;
-                            """, pbarcode=pbarcode):
-            print(row)
+                            """):
+            fav_name[i] = row["product_name"]
+            fav_barcode[i] = row["barcode"]
+            i += 1
+        return fav_name, fav_barcode  # return a tuple
 
 
 favorite_manager = FavoriteManager()

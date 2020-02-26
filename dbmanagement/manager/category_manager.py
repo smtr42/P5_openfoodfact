@@ -8,8 +8,8 @@ class CategoryManager:
                           id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                           category_name VARCHAR(255) UNIQUE);
                       """)
-
-    def get_cat(self):
+    @staticmethod
+    def get_cat():
         category_names = {}
         i = 1
         for row in db.query("""SELECT Category.category_name

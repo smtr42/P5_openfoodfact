@@ -1,4 +1,4 @@
-from .my_states import StartMenu, ProductMenu, ShowProduct
+from .my_states import StartMenu
 import os
 import time
 import sys
@@ -6,8 +6,7 @@ import sys
 
 class Machine(object):
     """
-    A simple state machine that mimics the functionality of a device from a
-    high level.
+    A state machine For a menu giving the ability to go back.
     """
 
     def __init__(self):
@@ -21,13 +20,15 @@ class Machine(object):
         self.save_test = False
 
     def show(self):
+        """
+        Call the show method of the current state
+        """
         self.state.show()
 
     def on_event(self, event):
         """
-        This is the bread and butter of the state machine. Incoming events are
-        delegated to the given states which then handle the event. The result is
-        then assigned as the new state.
+        Incoming events are delegated to the given states which then handle
+        the event. The result is then assigned as the new state.
         """
         # The next state will be the result of the on_event function.
         if self.state != self.back_menu:
