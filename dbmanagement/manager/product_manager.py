@@ -1,17 +1,17 @@
 import colorful as cf
-from dbmanagement.database import db
 from tqdm import tqdm
-from dbmanagement.models import Product
-from dbmanagement.manager.store_manager import StoreManager
+
+from dbmanagement.database import db
 from dbmanagement.manager.category_manager import CategoryManager
+from dbmanagement.manager.store_manager import StoreManager
 
 
 class ProductManager:
-
-    def __init__(self, product):
-        self.product = product
+    """This where everything related to the Product table is defined"""
 
     def create_tables(self):
+        """This function create the Product table
+        and the association tables related"""
         db.query(""" CREATE TABLE IF NOT EXISTS Product (
                           barcode BIGINT UNSIGNED UNIQUE PRIMARY KEY,
                           product_name VARCHAR(255) NOT NULL,
@@ -19,7 +19,6 @@ class ProductManager:
                           url VARCHAR(255));
                         """)
 
-        # creation des tables d'association
         db.query(""" CREATE TABLE IF NOT EXISTS Product_category (
                             id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                             product_barcode BIGINT UNSIGNED,
@@ -32,6 +31,7 @@ class ProductManager:
                                 FOREIGN KEY (category_id)
                                 REFERENCES Category(id));
                             """)
+
         db.query(""" CREATE TABLE IF NOT EXISTS Product_store(
                             id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                             product_barcode BIGINT UNSIGNED,
@@ -47,7 +47,7 @@ class ProductManager:
                             """)
 
     def insert_products(self, data):
-        """Elements insertion in database in tables product, Category,
+        """Insert data in all tables : Product, Category,
         Product_category, Store, Product_store"""
 
         for product in tqdm(
@@ -71,6 +71,7 @@ class ProductManager:
             CategoryManager.insert_into_product_category(barcode, category_id)
 
     def last_insert_id(self, product):
+        """ This return the last inserted id and the barcode associated"""
         id = None
         for row in db.query("""SELECT LAST_INSERT_ID() as id"""):
             id = row["id"]
@@ -78,7 +79,7 @@ class ProductManager:
         return barcode, id
 
     def get_unhealthy_prod_by_category(self, category):
-        """ retrieve bad rated products by user's selected category"""
+        """ Retrieve bad rated products by user's selected category"""
         input_category = category
         unhealthy_prod_by_cat = {}
         # i = 1
@@ -98,7 +99,7 @@ class ProductManager:
         return unhealthy_prod_by_cat
 
     def get_healthier_product_by_category(self, category):
-        """get a A or B rated randomized product to substitute to the unhealthy
+        """Get a A or B rated randomized product to substitute to the unhealthy
         one selected"""
         input_category = category
         healthy_prod_by_cat, data = {}, {}
@@ -117,6 +118,7 @@ class ProductManager:
         return healthy_prod_by_cat
 
     def wipe_out(self):
+        """Simple query erasing every tables"""
         print("Ditching old database...")
         db.query(""" DROP TABLE IF EXISTS
                           Product, Category, Store,
@@ -126,6 +128,8 @@ class ProductManager:
         print(cf.green("Database is now clean !"))
 
     def get_product_by_barcode(self, barcode):
+        """Return a dictionary with full description
+        of a product given a barcode"""
         pbarcode = barcode
         prod_by_barcode = {}
         store_list = []
@@ -140,8 +144,7 @@ class ProductManager:
             store_list.append(row["store_name"])
             prod_by_barcode.update(row)
         prod_by_barcode["store_name"] = store_list
-
         return prod_by_barcode
 
 
-product_manager = ProductManager(Product)
+product_manager = ProductManager()

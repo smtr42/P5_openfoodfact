@@ -1,12 +1,15 @@
-from .state import State
 import colorful as cf
+
+from dbmanagement.manager.category_manager import CategoryManager
+from dbmanagement.manager.favorite_manager import favorite_manager
 # import dbmanagement.main_manager as manager
 from dbmanagement.manager.product_manager import product_manager
-from dbmanagement.manager.favorite_manager import favorite_manager
-from dbmanagement.manager.category_manager import CategoryManager
+from .state import State
+
 
 class StartMenu(State):
     """The first State with the main menu. Two options are possibles."""
+
     def __init__(self):
         self.menu = {
             1: CategoryMenu,
@@ -28,6 +31,7 @@ class StartMenu(State):
 class CategoryMenu(State):
     """The follow up state after selecting the first menu. Now selecting which
     category to choose"""
+
     def __init__(self):
         self.menu = self.get_random_cat()
 
@@ -51,9 +55,10 @@ class CategoryMenu(State):
 class ProductMenu(State):
     """State where the user select an unhealthy product from selected category
     in precedent state"""
+
     def __init__(self, selected_cat):
         self.uh_barcode = {}
-        self.temp ={}
+        self.temp = {}
         self.selected_cat = selected_cat
         self.menu = self.get_product_by_category()
 
@@ -83,6 +88,7 @@ class ProductMenu(State):
 class SubProductMenu(State):
     """State where the substitute product list is displayed in regards of
     selected category and unhealthy product"""
+
     def __init__(self, selected_prod, selected_cat, uh_barcode):
         self.uh_barcode = uh_barcode
         self.selected_prod = selected_prod
@@ -113,7 +119,7 @@ class SubProductMenu(State):
         prod_list = product_manager.get_healthier_product_by_category(
             self.selected_cat)
         for enum, (barcode, name) in enumerate(prod_list.items()):
-            enum +=1
+            enum += 1
             self.barcode[enum] = barcode
             self.temp[enum] = name
         return self.temp
@@ -122,6 +128,7 @@ class SubProductMenu(State):
 class ShowProduct(State):
     """State where the description of the selected substitued product
     is diplayed, with the option to save it"""
+
     def __init__(self, event, barcode, prod, cat, uh_barcode):
         self.uh_barcode = uh_barcode
         self.barcode = barcode
@@ -145,7 +152,7 @@ class ShowProduct(State):
     def on_event(self, event):
         if event == "add_fav":
             self.save_product_into_fav()
-            return FavMenu()
+            return StartMenu()
         elif event == "bck":
             return SubProductMenu(
                 self.product_name, self.category, self.uh_barcode)
@@ -156,15 +163,17 @@ class ShowProduct(State):
 
     def save_product_into_fav(self):
         favorite_manager.save_healthy_product_to_favorite(self.event,
-            self.uh_barcode, self.full_product)
+                                                          self.uh_barcode,
+                                                          self.full_product)
         print("Your favorite substitute have been saved")
 
 
 class FavMenu(State):
     """The Sate where you can access the list of favorites products"""
+
     def __init__(self):
-        self.fav_name ={}
-        self.fav_barcode={}
+        self.fav_name = {}
+        self.fav_barcode = {}
         self.menu = self.get_fav_by_barcode()
 
     def show(self):
@@ -201,9 +210,6 @@ class ShowFavProduct(State):
               f"{self.full_product['store_name']}"
               f"\n For more information visit this url : "
               f"{self.full_product['url']}")
-        print(cf.white("\n If you want to " + cf.red('save', nested=True) +
-                       " this food into your favorite, "
-                       + cf.red('press "s" ', nested=True) + "\n \n \n"))
 
     def event(self, event):
         if event == "bck":

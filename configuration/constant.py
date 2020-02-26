@@ -1,4 +1,4 @@
-
+"""This is where you modify constants"""
 USER = "user"
 PASSWORD = "pwd"
 DATABASE_NAME = "mydb"

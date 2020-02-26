@@ -2,8 +2,10 @@ from dbmanagement.database import db
 
 
 class FavoriteManager:
+    """Contain methods about the Favorite Table"""
 
     def create_tables(self):
+        """Create the Favorite Table"""
         db.query(""" CREATE TABLE IF NOT EXISTS Favorite (
                           id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                           product_barcode BIGINT UNSIGNED NOT NULL,
@@ -18,14 +20,17 @@ class FavoriteManager:
                         """)
 
     def save_healthy_product_to_favorite(self, event, uh_barcode, sub_product):
+        """Insert into the Favorite table a couple of barcode"""
         product_barcode = uh_barcode[event]
         substitute_barcode = sub_product["barcode"]
 
         db.query("""INSERT INTO Favorite(product_barcode, substitute_barcode)
         VALUES(:product_barcode, :substitute_barcode)
         ON DUPLICATE KEY UPDATE
-        product_barcode=:product_barcode, substitute_barcode=:substitute_barcode
-        ;""", product_barcode=product_barcode, substitute_barcode=substitute_barcode)
+        product_barcode=:product_barcode, 
+        substitute_barcode=:substitute_barcode
+        ;""", product_barcode=product_barcode,
+                 substitute_barcode=substitute_barcode)
 
     def get_all_favorite(self):
         """ retrieve all substitute saved by the user"""
@@ -40,7 +45,7 @@ class FavoriteManager:
             fav_name[i] = row["product_name"]
             fav_barcode[i] = row["barcode"]
             i += 1
-        return fav_name, fav_barcode  # return a tuple
+        return fav_name, fav_barcode
 
 
 favorite_manager = FavoriteManager()

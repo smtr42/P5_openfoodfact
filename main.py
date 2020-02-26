@@ -1,13 +1,15 @@
+"""This is the main file where everything come in together
+from download to cleaning, insertion in database and FSM"""
 import colorful as cf
-from UI.print_out import input_yes_no, sentence
-from apidata.requester import RequestData
-from apidata.cleaner import Cleaner
-from dbmanagement.manager.category_manager import CategoryManager
-from dbmanagement.manager.product_manager import product_manager
-from dbmanagement.manager.favorite_manager import favorite_manager
-from dbmanagement.manager.store_manager import StoreManager
-from UI.fsm.main import device
 
+from UI.fsm.main import device
+from UI.print_out import input_yes_no, sentence
+from apidata.cleaner import Cleaner
+from apidata.requester import RequestData
+from dbmanagement.manager.category_manager import CategoryManager
+from dbmanagement.manager.favorite_manager import favorite_manager
+from dbmanagement.manager.product_manager import product_manager
+from dbmanagement.manager.store_manager import StoreManager
 
 print(cf.red("IF IT IS THE FIRST TIME YOU USE THE APPLICATION, YOU MUST "
              "DOWNLOAD DATA AND RESET DATABASE \n"))
@@ -18,7 +20,6 @@ if answer == 'y':
     rd.fetch_products()
 else:
     pass
-
 
 dataclean = Cleaner()
 category_manager = CategoryManager()

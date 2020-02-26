@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
-import requests
 import json
+
 import colorful as cf
+import requests
 from tqdm import tqdm
+
 from configuration import constant
 
 
@@ -67,11 +68,10 @@ class RequestData:
 
     def categories_to_json(self, obj):
         """saving categories to a json files"""
-        with open('apidata/localdata/categories_fr.json','w') as f:
+        with open('apidata/localdata/categories_fr.json', 'w') as f:
             json.dump(obj, f)
 
     def prod_to_json(self, obj):
         """save the products to a json file"""
-        with open('apidata/localdata/products_fr.json','w') as f:
+        with open('apidata/localdata/products_fr.json', 'w') as f:
             json.dump(obj, f)
-
