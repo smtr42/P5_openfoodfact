@@ -1,6 +1,5 @@
 import json
 import os
-
 from configuration import constant
 
 
@@ -33,7 +32,8 @@ class Cleaner:
                         self.data_format(element, category)
 
     def data_exist(self, element):
-        """ run trough the data, if something's missing, it's discarded"""
+        """ run trough the data, if something's missing (store, barcode,
+        nutriscore), it's discarded"""
         for x in self.keys:
             if x not in element or element[x] == "" or len(element["id"]) != 13:
                 return False
@@ -45,7 +45,8 @@ class Cleaner:
         return True
 
     def data_format(self, element, cat):
-        """format the data so it's usable into a list of dictionary"""
+        """format the data so it's usable into a list of dictionary
+        It returns data that will be used for the database"""
         barcode = int(element['id'])
         category = cat
         product_name = element['product_name_fr']

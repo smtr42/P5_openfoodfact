@@ -1,7 +1,6 @@
 $ cat .gitignore
 *.idea/
 __pycache__/
-*.json
 
 ### PyCharm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
