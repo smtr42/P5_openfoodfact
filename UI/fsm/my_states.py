@@ -168,21 +168,16 @@ class FavMenu(State):
         self.menu = self.get_fav_by_barcode()
 
     def show(self):
-        print(f"\n \n \n"
-              f"{self.full_product['product_name']} is a better food as it has"
-              f" a nutriscore graded {self.full_product['nutriscore']}."
-              f"\n You can buy it in these stores : "
-              f"{self.full_product['store_name']}"
-              f"\n For more information visit this url : "
-              f"{self.full_product['url']}")
-        print(cf.white("\n " + cf.red('Press q', nested=True) +
-                       " to quit, "
-                       + cf.red('press "r" ', nested=True) + "to go back\n \n \n"))
+        print("\n \n")
+        for item in self.menu:
+            print(f"{item}. {self.menu[item]}")
         pass
 
     def on_event(self, event):
-        # select number and go to state
-        pass
+        if event == "bck":
+            return StartMenu()
+        else:
+            return ShowFavProduct(event, self.fav_barcode[event])
 
     def get_fav_by_barcode(self):
         self.fav_name, self.fav_barcode = favorite_manager.get_all_favorite()
@@ -190,3 +185,33 @@ class FavMenu(State):
 
     def get_product(self):
         pass
+
+
+class ShowFavProduct(State):
+    def __init__(self, event, barcode):
+        self.event = event
+        self.barcode = barcode
+        self.full_product = self.get_product()
+
+    def show(self):
+        print(f"\n \n \n"
+              f"{self.full_product['product_name']} is a better food as it has"
+              f" a nutriscore graded {self.full_product['nutriscore']}."
+              f"\n You can buy it in these stores : "
+              f"{self.full_product['store_name']}"
+              f"\n For more information visit this url : "
+              f"{self.full_product['url']}")
+        print(cf.white("\n If you want to " + cf.red('save', nested=True) +
+                       " this food into your favorite, "
+                       + cf.red('press "s" ', nested=True) + "\n \n \n"))
+
+    def event(self, event):
+        if event == "bck":
+            return FavMenu()
+        else:
+            return ShowFavProduct(event, self.fav_barcode[event])
+        pass
+
+    def get_product(self):
+        product = product_manager.get_product_by_barcode(self.barcode)
+        return product
