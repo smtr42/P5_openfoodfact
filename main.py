@@ -1,5 +1,5 @@
-"""This is the main file where everything come in together
-from download to cleaning, insertion in database and FSM"""
+"""This is the main file where everything come in together from download to
+cleaning, insertion in database and FSM."""
 import colorful as cf
 
 from UI.fsm.main import device

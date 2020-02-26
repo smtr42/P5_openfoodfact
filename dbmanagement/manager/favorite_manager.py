@@ -10,7 +10,6 @@ class FavoriteManager:
                           id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                           product_barcode BIGINT UNSIGNED NOT NULL,
                           substitute_barcode BIGINT UNSIGNED NOT NULL,
-                          
                           CONSTRAINT fk_favorite_substitute
                             FOREIGN KEY (substitute_barcode)
                             REFERENCES Product(barcode),
@@ -27,9 +26,9 @@ class FavoriteManager:
         db.query("""INSERT INTO Favorite(product_barcode, substitute_barcode)
         VALUES(:product_barcode, :substitute_barcode)
         ON DUPLICATE KEY UPDATE
-        product_barcode=:product_barcode, 
-        substitute_barcode=:substitute_barcode
-        ;""", product_barcode=product_barcode,
+        product_barcode=:product_barcode,
+        substitute_barcode=:substitute_barcode;""",
+                 product_barcode=product_barcode,
                  substitute_barcode=substitute_barcode)
 
     def get_all_favorite(self):

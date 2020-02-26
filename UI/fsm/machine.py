@@ -38,8 +38,8 @@ class Machine(object):
 
         while True:
             ui = input(
-                """Choose the menu you want to access by writing the line's 
-number : Go back is 'r', quit is 'q', main menu is 'm' \n => """)
+                """Choose the menu you want to access by writing the line's
+ number : Go back is 'r', quit is 'q', main menu is 'm' \n => """)
             try:
                 ui = int(ui)
             except ValueError:

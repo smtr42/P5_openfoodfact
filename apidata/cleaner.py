@@ -36,7 +36,8 @@ class Cleaner:
         """ run trough the data, if something's missing (store, barcode,
         nutriscore), it's discarded"""
         for x in self.keys:
-            if x not in element or element[x] == "" or len(element["id"]) != 13:
+            if x not in element or element[x] == "" \
+                    or len(element["id"]) != 13:
                 return False
         barcode = int(element['id'])
         if barcode not in set(self.barcode_list):

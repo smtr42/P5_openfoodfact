@@ -7,7 +7,6 @@ CATEGORIES = ["Fromages",
               "Desserts",
               "Viandes",
               "Chocolats",
-              "Snacks",]
+              "Snacks", ]
 
 PRODUCT_NUMBER = 1000
-

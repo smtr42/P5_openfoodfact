@@ -16,7 +16,7 @@ class StoreManager:
         """Insert the data into the Store table"""
         db.query("""INSERT INTO Store(id, store_name)
                     VALUES(null, :store_name)
-                    ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), 
+                    ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id),
                     store_name=store_name;""",
                  store_name=store_name.strip(), )
 

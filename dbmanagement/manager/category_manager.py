@@ -29,7 +29,7 @@ class CategoryManager:
         category = product["category"]
         db.query("""INSERT INTO Category(id, category_name)
                     VALUES(null, :category)
-                    ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), 
+                    ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id),
                     category_name=:category;""",
                  category=category, )
 

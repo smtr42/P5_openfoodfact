@@ -23,8 +23,7 @@ class ProductManager:
                             id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                             product_barcode BIGINT UNSIGNED,
                             category_id BIGINT UNSIGNED,
-
-                            CONSTRAINT fk_productbarcode_barcode 
+                            CONSTRAINT fk_productbarcode_barcode
                                 FOREIGN KEY (product_barcode)
                                 REFERENCES Product(barcode),
                             CONSTRAINT fk_categoryid_id
@@ -37,7 +36,6 @@ class ProductManager:
                             product_barcode BIGINT UNSIGNED,
                             store_id BIGINT UNSIGNED,
                             UNIQUE(product_barcode, store_id),
-                            
                             CONSTRAINT fk_productbarcodestore_barcode
                                 FOREIGN KEY (product_barcode)
                                 REFERENCES Product(barcode),
@@ -53,10 +51,10 @@ class ProductManager:
         for product in tqdm(
                 data, desc="Inserting products in database", total=len(data)):
 
-            db.query("""INSERT INTO Product(barcode, product_name, nutriscore,
-                                                                            url)
-                        VALUES (:barcode, :product_name,:nutriscore, :url) 
-                        ON DUPLICATE KEY UPDATE 
+            db.query("""INSERT INTO Product(barcode, product_name,
+            nutriscore, url)
+                        VALUES (:barcode, :product_name,:nutriscore, :url)
+                        ON DUPLICATE KEY UPDATE
                             barcode=:barcode,product_name=:product_name,
                             nutriscore=:nutriscore, url=:url;
                         """, **product)
@@ -85,10 +83,10 @@ class ProductManager:
         # i = 1
         for row in db.query("""SELECT Product.product_name, Product.barcode
                     FROM Product
-                    INNER JOIN Product_category AS pc 
+                    INNER JOIN Product_category AS pc
                     ON Product.barcode = pc.product_barcode
                     INNER JOIN Category  ON  pc.category_id = Category.id
-                    WHERE Category.category_name = :input_category AND 
+                    WHERE Category.category_name = :input_category AND
                     (Product.nutriscore = 'e' OR Product.nutriscore= 'd')
                     ORDER BY RAND() LIMIT 5
                     ;""", input_category=input_category):
@@ -102,15 +100,14 @@ class ProductManager:
         """Get a A or B rated randomized product to substitute to the unhealthy
         one selected"""
         input_category = category
-        healthy_prod_by_cat, data = {}, {}
+        healthy_prod_by_cat = {}
 
         for row in db.query("""SELECT Product.product_name, Product.barcode
                     FROM Product
-                    INNER JOIN Product_category AS pc 
+                    INNER JOIN Product_category AS pc
                     ON Product.barcode = pc.product_barcode
                     INNER JOIN Category  ON  pc.category_id = Category.id
-
-                    WHERE Category.category_name = :input_category AND 
+                    WHERE Category.category_name = :input_category AND
                     (Product.nutriscore = 'a' OR Product.nutriscore= 'b')
                     ORDER BY RAND() LIMIT 5
                     ;""", input_category=input_category):
@@ -136,7 +133,7 @@ class ProductManager:
         for row in db.query("""SELECT Product.product_name, Product.nutriscore,
          Product.url, Product.barcode, Store.store_name
                     FROM Product
-                    INNER JOIN Product_store AS ps 
+                    INNER JOIN Product_store AS ps
                     ON ps.product_barcode=Product.barcode
                     INNER JOIN Store ON Store.id=ps.store_id
                     WHERE Product.barcode = :pbarcode;
