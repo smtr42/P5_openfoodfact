@@ -5,11 +5,6 @@
 
 <p align="center">
   <a href="">
-    <img src="https://cdn.pixabay.com/photo/2017/06/16/07/26/under-construction-2408062_960_720.png" alt="Logo" width="313" height="113">
-  </a>
-</p>
-<p align="center">
-  <a href="">
     <img src="https://upload.wikimedia.org/wikipedia/fr/0/0d/Logo_OpenClassrooms.png" alt="Logo" width="100" height="100">
   </a>
 </p>
@@ -33,9 +28,7 @@
  <p align="center">
     A Openclassrooms practical case where you use OpenFoodFacts to find alternatives to lesser nutritious food.
     <br />
-
   </p>
-</p>
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
@@ -43,10 +36,7 @@
 * [About the Project](#about-the-project)
 * [Getting Started](#getting-started)
 * [Usage](#usage)
-* [Contributing](#contributing)
 * [Contact](#contact)
-* [Acknowledgements](#authors)
-
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -72,7 +62,9 @@ The goal is to learn about:
 Personal challenges and technical choices :
 * Use Requests: HTTP for Humans™,
 * Use Records: SQL for Humans™,
-* Make UML model of the database.
+* Make UML model of the database,
+* Make a orm-like code structure,
+* Use a Finite State Machine to navigate in the menu.
 
 ### Functionality
 
@@ -84,8 +76,8 @@ Personal challenges and technical choices :
 ## Getting Started
 
 ### Installation
-
-I use pipenv to manage my dependencies.
+I used Python 3.7.
+I use pipenv to manage dependencies.
 
 1. Clone the repo
 ```sh
@@ -95,33 +87,39 @@ git clone https://github.com/smtr42/P5_openfoodfact.git
 ```sh
 pipenv install
 ```
+### Database creation
+The user must create himself the MySQL database. Open a MySQL Command Line Client.
+```sql
+CREATE DATABASE mydb CHARACTER SET 'utf8';
+```
+
+You must enter those parameters in the file **configuration/constant.py** as well as your username and your password.
+
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-
+Open a Command Line Interface and launch the main.py script with Python.
+```shell script
+python -m main
+```
 ### Specifications
 
-When prompted, answer the question by typing the appropriate number. Questions are in this order :
+When prompted, answer the question by typing the appropriate number or letter.
+For a first start you must download data from the API and reset the database. 
+Here is an example of usage :
+* Type "y" to donwload data
+* Type "y" to reset the database
+* Type "1" to search for food to substitute
 * Select a category
-* Select which food
+* Select food
+* Select healthy food
+* You can either go back or save the food in the database for later use.
 <br>
 
-Then the program shows the substitute and the result is written inside the local database.
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-This project is evaluated so no contribution outside the scope of the course will be accepted.
-
-<!-- CONTACT -->
-## Contact
-
-**Simonnet T** - email@example.com
-
-Project Link: [https://github.com/smtr42/P5_openfoodfact](https://github.com/your_username/repo_name)
+All along you can write "r" for going back, "q" to quit, "m" to go back to the first menu.
 
 ## Authors
+Project Link: [https://github.com/smtr42/P5_openfoodfact]
 
 * **Simonnet T** - *Initial work* - [smtr42](https://github.com/smtr42)
    
