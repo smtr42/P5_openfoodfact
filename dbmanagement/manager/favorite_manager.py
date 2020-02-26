@@ -17,10 +17,27 @@ class FavoriteManager:
                             REFERENCES Product(barcode));
                         """)
 
-    def save_prod_to_fav(self, product):
-        """save in the db the selected substitute"""
-        pass
+    def save_healthy_product_to_favorite(self, event, uh_barcode, sub_product):
+        product_barcode = uh_barcode[event]
+        substitute_barcode = sub_product["barcode"]
+
+        db.query("""INSERT INTO Favorite(product_barcode, substitute_barcode)
+        VALUES(:product_barcode, :substitute_barcode)
+        ON DUPLICATE KEY UPDATE
+        product_barcode=:product_barcode, substitute_barcode=:substitute_barcode
+        ;""", product_barcode=product_barcode, substitute_barcode=substitute_barcode)
 
     def get_all_favorite(self):
         """ retrieve all substitute saved by the user"""
-        pass
+
+        for row in db.query("""SELECT Product.product_name, Product.nutriscore,
+         Product.url, Product.barcode, Store.store_name
+                            FROM Favorite
+                            INNER JOIN Favorite ON 
+                            Favorite.substitute_barcode=Product.barcode
+                            WHERE Product.barcode = :pbarcode;
+                            """, pbarcode=pbarcode):
+            print(row)
+
+
+favorite_manager = FavoriteManager()

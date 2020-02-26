@@ -6,7 +6,8 @@ DATABASE_NAME = "mydb"
 CATEGORIES = ["Fromages",
               "Desserts",
               "Viandes",
-              "Chocolats",]
+              "Chocolats",
+              "Snacks",]
 
-PRODUCT_NUMBER = 100
+PRODUCT_NUMBER = 1000
 

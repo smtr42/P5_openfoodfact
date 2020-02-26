@@ -3,7 +3,6 @@ import requests
 import json
 import colorful as cf
 from tqdm import tqdm
-
 from configuration import constant
 
 
@@ -17,7 +16,6 @@ class RequestData:
         self.list_prod = []
 
     def fetch_category(self):
-        """ fetch the categories"""
         """Request the list of category from the API"""
         print("Initialization - Please wait")
         try:
@@ -31,8 +29,9 @@ class RequestData:
             print(cf.red("Something went bad, please retry : :", err))
 
         list_cat = constant.CATEGORIES
+        print("list_cat in requester :", list_cat)
         resp = [x for x in self.list_cat if x in list_cat]
-
+        print("resp in requester :", resp)
         self.list_cat = resp
         self.categories_to_json(resp)
 
@@ -76,7 +75,3 @@ class RequestData:
         with open('apidata/localdata/products_fr.json','w') as f:
             json.dump(obj, f)
 
-
-# rd = RequestData()
-# rd.fetch_category()
-# rd.fetch_products()

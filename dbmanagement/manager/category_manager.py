@@ -9,6 +9,16 @@ class CategoryManager:
                           category_name VARCHAR(255) UNIQUE);
                       """)
 
+    def get_cat(self):
+        category_names = {}
+        i = 1
+        for row in db.query("""SELECT Category.category_name
+                               FROM Category
+                               ORDER BY RAND() LIMIT 5;"""):
+            category_names[i] = row["category_name"]
+            i += 1
+        return category_names
+
     @staticmethod
     def insert_into_category(product):
         category = product["category"]

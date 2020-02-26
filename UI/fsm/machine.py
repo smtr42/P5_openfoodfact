@@ -1,4 +1,4 @@
-from .my_states import StartMenu, ProductMenu
+from .my_states import StartMenu, ProductMenu, ShowProduct
 import os
 import time
 import sys
@@ -16,8 +16,9 @@ class Machine(object):
         # Start with a default state.
         self.state = StartMenu()
         self.start_menu = self.state
-        self.back_menu = None
-        self.product_menu = None
+        self.back_menu = StartMenu()
+        self.product_menu = StartMenu()
+        self.save_test = False
 
     def show(self):
         self.state.show()
@@ -54,12 +55,22 @@ number : Go back is 'r', quit is 'q' \n => """)
                 elif ui == "m":
                     self.go_start()
                     return "strtmnu"
-                elif ui == "fav" and self.state == ProductMenu:
+                elif ui == "s":
                     return "add_fav"
                 else:
                     print(input_error_message)
                     self.show()
                     continue
+            if self.save_test == True:
+                print(input_error_message)
+                self.show()
+                continue
+            try:
+                temp = ui > max(self.state.menu.keys())
+            except AttributeError:
+                print(input_error_message)
+                self.show()
+                continue
             if ui > max(self.state.menu.keys()):
                 print(input_error_message)
                 self.show()
@@ -84,8 +95,10 @@ number : Go back is 'r', quit is 'q' \n => """)
         sys.exit()
 
     def go_back(self):
-
         self.state = self.back_menu
 
     def go_start(self):
         self.state = self.start_menu
+
+    def set_save_test(self):
+        pass

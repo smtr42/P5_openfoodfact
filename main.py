@@ -5,7 +5,7 @@ from apidata.requester import RequestData
 from apidata.cleaner import Cleaner
 from dbmanagement.manager.category_manager import CategoryManager
 from dbmanagement.manager.product_manager import product_manager
-from dbmanagement.manager.favorite_manager import FavoriteManager
+from dbmanagement.manager.favorite_manager import favorite_manager
 from dbmanagement.manager.store_manager import StoreManager
 from UI.fsm.main import device
 
@@ -34,7 +34,6 @@ json_exists()
 
 dataclean = Cleaner()
 category_manager = CategoryManager()
-favorite_manager = FavoriteManager()
 store_manager = StoreManager()
 data = dataclean.get_dict_data()
 

@@ -50,7 +50,8 @@ class ProductManager:
         """Elements insertion in database in tables product, Category,
         Product_category, Store, Product_store"""
 
-        for product in tqdm(data, desc="Inserting products in database", total=len(data)):
+        for product in tqdm(
+                data, desc="Inserting products in database", total=len(data)):
 
             db.query("""INSERT INTO Product(barcode, product_name, nutriscore,
                                                                             url)
@@ -80,38 +81,40 @@ class ProductManager:
         """ retrieve bad rated products by user's selected category"""
         input_category = category
         unhealthy_prod_by_cat = {}
-        i = 1
-        for row in db.query("""SELECT Product.product_name
+        # i = 1
+        for row in db.query("""SELECT Product.product_name, Product.barcode
                     FROM Product
-                    INNER JOIN Product_category AS pc ON Product.barcode = pc.product_barcode
+                    INNER JOIN Product_category AS pc 
+                    ON Product.barcode = pc.product_barcode
                     INNER JOIN Category  ON  pc.category_id = Category.id
-
                     WHERE Category.category_name = :input_category AND 
                     (Product.nutriscore = 'e' OR Product.nutriscore= 'd')
                     ORDER BY RAND() LIMIT 5
                     ;""", input_category=input_category):
-            unhealthy_prod_by_cat[i] = row["product_name"]
-            i += 1
+            unhealthy_prod_by_cat[row["barcode"]] = row["product_name"]
+
+            # unhealthy_prod_by_cat[i] = row["product_name"]
+            # i += 1
         return unhealthy_prod_by_cat
 
     def get_healthier_product_by_category(self, category):
-        """get a A or B rated randomized product to substitute to the unhealthy one selected"""
+        """get a A or B rated randomized product to substitute to the unhealthy
+        one selected"""
         input_category = category
         healthy_prod_by_cat, data = {}, {}
-        i = 1
+
         for row in db.query("""SELECT Product.product_name, Product.barcode
                     FROM Product
-                    INNER JOIN Product_category AS pc ON Product.barcode = pc.product_barcode
+                    INNER JOIN Product_category AS pc 
+                    ON Product.barcode = pc.product_barcode
                     INNER JOIN Category  ON  pc.category_id = Category.id
 
                     WHERE Category.category_name = :input_category AND 
                     (Product.nutriscore = 'a' OR Product.nutriscore= 'b')
                     ORDER BY RAND() LIMIT 5
                     ;""", input_category=input_category):
-            healthy_prod_by_cat[i] = row["product_name"]
-            data[row["barcode"]] = row["product_name"]
-            i += 1
-        return healthy_prod_by_cat, data
+            healthy_prod_by_cat[row["barcode"]] = row["product_name"]
+        return healthy_prod_by_cat
 
     def wipe_out(self):
         print("Ditching old database...")
@@ -122,25 +125,23 @@ class ProductManager:
                         """)
         print(cf.green("Database is now clean !"))
 
-    def save_healthy_product_to_favory(self):
-        pass
-
-    def get_product_by_name(self, name):
-        input_name = name
-        prod_by_name = {}
-        for row in db.query("""SELECT Product.name, Product.nutriscore, Product.url, Product.barcode, Store.store_name
+    def get_product_by_barcode(self, barcode):
+        pbarcode = barcode
+        prod_by_barcode = {}
+        store_list = []
+        for row in db.query("""SELECT Product.product_name, Product.nutriscore,
+         Product.url, Product.barcode, Store.store_name
                     FROM Product
-                    INNER JOIN Product_store AS ps ON ps.product_barcode=Product.barcode
+                    INNER JOIN Product_store AS ps 
+                    ON ps.product_barcode=Product.barcode
                     INNER JOIN Store ON Store.id=ps.store_id
-                    WHERE Product.product_name = :input_name;
-                    """, input_name=input_name):
-            print(row)
-        return prod_by_name
-        pass
+                    WHERE Product.barcode = :pbarcode;
+                    """, pbarcode=pbarcode):
+            store_list.append(row["store_name"])
+            prod_by_barcode.update(row)
+        prod_by_barcode["store_name"] = store_list
 
-# modify retrieve product by name and replace by barcode
-# transfert barcode to other states for better retrieval
-# move function i product manager to better suited manager i.e store, category
-# Bonus : add multiple category by products for better accuracy when searching
+        return prod_by_barcode
+
 
 product_manager = ProductManager(Product)
