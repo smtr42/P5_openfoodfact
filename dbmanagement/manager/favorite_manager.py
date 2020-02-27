@@ -7,7 +7,7 @@ class FavoriteManager:
     def create_tables(self):
         """Create the Favorite Table"""
         db.query(""" CREATE TABLE IF NOT EXISTS Favorite (
-                          id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                          id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                           product_barcode BIGINT UNSIGNED NOT NULL,
                           substitute_barcode BIGINT UNSIGNED NOT NULL,
                           CONSTRAINT fk_favorite_substitute

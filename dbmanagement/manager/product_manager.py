@@ -20,7 +20,7 @@ class ProductManager:
                         """)
 
         db.query(""" CREATE TABLE IF NOT EXISTS Product_category (
-                            id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                            id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                             product_barcode BIGINT UNSIGNED,
                             category_id BIGINT UNSIGNED,
                             CONSTRAINT fk_productbarcode_barcode
@@ -32,7 +32,7 @@ class ProductManager:
                             """)
 
         db.query(""" CREATE TABLE IF NOT EXISTS Product_store(
-                            id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                            id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                             product_barcode BIGINT UNSIGNED,
                             store_id BIGINT UNSIGNED,
                             UNIQUE(product_barcode, store_id),

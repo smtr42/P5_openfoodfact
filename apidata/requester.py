@@ -30,9 +30,7 @@ class RequestData:
             print(cf.red("Something went bad, please retry : :", err))
 
         list_cat = constant.CATEGORIES
-        print("list_cat in requester :", list_cat)
         resp = [x for x in self.list_cat if x in list_cat]
-        print("resp in requester :", resp)
         self.list_cat = resp
         self.categories_to_json(resp)
 

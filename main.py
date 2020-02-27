@@ -18,8 +18,6 @@ if answer == 'y':
     rd = RequestData()
     rd.fetch_category()
     rd.fetch_products()
-else:
-    pass
 
 dataclean = Cleaner()
 category_manager = CategoryManager()
@@ -35,8 +33,6 @@ if answer == 'y':
     product_manager.create_tables()
     favorite_manager.create_tables()
     product_manager.insert_products(data)
-else:
-    pass
 
 while True:
     device.show()

@@ -7,7 +7,7 @@ class StoreManager:
     def create_tables(self):
         """Create the Store table"""
         db.query(""" CREATE TABLE IF NOT EXISTS Store (
-                              id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                              id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
                               store_name VARCHAR(255) UNIQUE);
                               """)
 

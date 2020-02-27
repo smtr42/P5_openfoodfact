@@ -72,11 +72,11 @@ Personal challenges and technical choices :
 * The user is able to use the terminal
 * The search is made in a local Database
  
- ###User stories
- * As a chef I want to replace bad rated products for healthier ones in order to cook healthier food.
+ ### User stories
+ * As a user I want to replace bad rated products for healthier ones in order to cook healthier food.
 *  As a user I want the possibility to choose a product and have its healthier from the same category for better swapping.
-*  AS a user I want the possibility to save the healthy food I found to retrieve it later if needed.
-*  AS a user I want the data to be on my drive to not have to access internet each time.
+*  As a user I want the possibility to save the healthy food I found to retrieve it later if needed.
+*  As a user I want the data to be on my drive to not have to access internet each time.
   
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -96,10 +96,10 @@ pipenv install
 ### Database creation
 The user must create himself the MySQL database. Open a MySQL Command Line Client.
 ```sql
-CREATE DATABASE mydb CHARACTER SET 'utf8';
+CREATE DATABASE your-database-name CHARACTER SET 'utf8';
 ```
 
-You must enter those parameters in the file **configuration/constant.py** as well as your username and your password.
+You must enter the name of the database in the file **configuration/constant.py** as well as your username and your password.
 
 
 <!-- USAGE EXAMPLES -->

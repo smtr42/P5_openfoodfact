@@ -4,7 +4,7 @@ from .machine import Machine
 
 """Instanciate the Machine class and has the start menu print output"""
 
-print(cf.green("""\
+print(cf.green(r"""
    ____                   ______              _  __           _
   / __ \                 |  ____|            | |/ _|         | |
  | |  | |_ __   ___ _ __ | |__ ___   ___   __| | |_ __ _  ___| |_

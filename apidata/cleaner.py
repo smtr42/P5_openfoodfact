@@ -20,17 +20,17 @@ class Cleaner:
     def filter_product(self):
         """  get the data from json files and run checks"""
         this_folder = os.path.dirname(os.path.abspath(__file__))
+        my_file = os.path.join(this_folder, 'localdata','products_fr.json')
         try:
-            my_file = os.path.join(this_folder, 'localdata/products_fr.json')
-        except:
-            print("You might have not downloaded the data...")
-        with open(my_file, 'r') as json_file:
-            data = json.load(json_file)
-            for category in self.list_cat:
-                products_s = data[category]['products']
-                for element in products_s:
-                    if self.data_exist(element):
-                        self.data_format(element, category)
+            with open(my_file, 'r') as json_file:
+                data = json.load(json_file)
+                for category in self.list_cat:
+                    products_s = data[category]['products']
+                    for element in products_s:
+                        if self.data_exist(element):
+                            self.data_format(element, category)
+        except FileNotFoundError:
+            print("The file 'products_fr.json is missing'")
 
     def data_exist(self, element):
         """ run trough the data, if something's missing (store, barcode,

@@ -2,7 +2,6 @@ import colorful as cf
 
 from dbmanagement.manager.category_manager import CategoryManager
 from dbmanagement.manager.favorite_manager import favorite_manager
-# import dbmanagement.main_manager as manager
 from dbmanagement.manager.product_manager import product_manager
 from .state import State
 
