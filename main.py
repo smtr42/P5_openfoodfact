@@ -2,8 +2,8 @@
 cleaning, insertion in database and FSM."""
 import colorful as cf
 
-from UI.fsm.main import device
-from UI.print_out import input_yes_no, sentence
+from user_interface.fsm.main import device
+from user_interface.print_out import input_yes_no, sentence
 from apidata.cleaner import Cleaner
 from apidata.requester import RequestData
 from dbmanagement.manager.category_manager import CategoryManager
