@@ -178,7 +178,7 @@ class FavMenu(State):
     def show(self):
         print("\n \n")
         for item in self.menu:
-            print(f"{item}. {self.menu[item]}")
+            print(f"{item}. {self.menu[item][0]}  remplace  {self.menu[item][3]}")
         pass
 
     def on_event(self, event):
@@ -186,7 +186,7 @@ class FavMenu(State):
             return StartMenu()
         else:
             try:
-                return ShowFavProduct(event, self.fav_barcode[event])
+                return ShowFavProduct(event, self.fav_barcode[event][0])
             except KeyError:
                 return StartMenu()
 
@@ -217,7 +217,7 @@ class ShowFavProduct(State):
         if event == "bck":
             return FavMenu()
         else:
-            return ShowFavProduct(event, self.fav_barcode[event])
+            return ShowFavProduct(event, self.barcode)
         pass
 
     def get_product(self):

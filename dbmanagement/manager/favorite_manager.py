@@ -1,5 +1,5 @@
 from dbmanagement.database import db
-
+from dbmanagement.manager.product_manager import product_manager
 
 class FavoriteManager:
     """Contain methods about the Favorite Table"""
@@ -35,15 +35,21 @@ class FavoriteManager:
         """ retrieve all substitute saved by the user"""
         fav_name = {}
         fav_barcode = {}
+        uh_barcode = {}
         i = 1
-        for row in db.query("""SELECT Product.product_name, Product.barcode
+        for row in db.query("""SELECT Product.product_name, Product.barcode,
+        Favorite.product_barcode, Favorite.substitute_barcode
                             FROM Product
                             INNER JOIN Favorite ON
                             Favorite.substitute_barcode=Product.barcode
                             """):
-            fav_name[i] = row["product_name"]
-            fav_barcode[i] = row["barcode"]
+            uh_name = product_manager.get_product_by_barcode(
+                row["product_barcode"])
+            fav_name[i] = row["product_name"], row["substitute_barcode"], row[
+                "product_barcode"], uh_name['product_name']
+            fav_barcode[i] = row["barcode"], row["product_barcode"]
             i += 1
+
         return fav_name, fav_barcode
 
 
