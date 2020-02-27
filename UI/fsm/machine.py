@@ -57,16 +57,14 @@ class Machine(object):
                     print(input_error_message)
                     self.show()
                     continue
-            # try:
-            #     temp = ui > max(self.state.menu.keys())
-            # except AttributeError:
-            #     print(input_error_message)
-            #     self.show()
-            #     continue
             try:
                 max(self.state.menu.keys())
             except ValueError:
                 return ui
+            except AttributeError:
+                print(input_error_message)
+                self.show()
+                continue
             if ui > max(self.state.menu.keys()):
                 print(input_error_message)
                 self.show()
