@@ -11,30 +11,36 @@ from dbmanagement.manager.favorite_manager import favorite_manager
 from dbmanagement.manager.product_manager import product_manager
 from dbmanagement.manager.store_manager import StoreManager
 
-print(cf.red("IF IT IS THE FIRST TIME YOU USE THE APPLICATION, YOU MUST "
-             "DOWNLOAD DATA AND RESET DATABASE \n"))
-answer = input_yes_no(sentence["data"])
-if answer == 'y':
-    rd = RequestData()
-    rd.fetch_category()
-    rd.fetch_products()
 
-dataclean = Cleaner()
-category_manager = CategoryManager()
-store_manager = StoreManager()
-data = dataclean.get_dict_data()
+def main():
+    print(cf.red("IF IT IS THE FIRST TIME YOU USE THE APPLICATION, YOU MUST "
+                 "DOWNLOAD DATA AND RESET DATABASE \n"))
+    answer = input_yes_no(sentence["data"])
+    if answer == 'y':
+        rd = RequestData()
+        rd.fetch_category()
+        rd.fetch_products()
 
-answer = input_yes_no(sentence["erase"])
+    dataclean = Cleaner()
+    category_manager = CategoryManager()
+    store_manager = StoreManager()
+    data = dataclean.get_dict_data()
 
-if answer == 'y':
-    product_manager.wipe_out()
-    category_manager.create_tables()
-    store_manager.create_tables()
-    product_manager.create_tables()
-    favorite_manager.create_tables()
-    product_manager.insert_products(data)
+    answer = input_yes_no(sentence["erase"])
 
-while True:
-    device.show()
-    event = device.input_checker()
-    device.on_event(event)
+    if answer == 'y':
+        product_manager.wipe_out()
+        category_manager.create_tables()
+        store_manager.create_tables()
+        product_manager.create_tables()
+        favorite_manager.create_tables()
+        product_manager.insert_products(data)
+
+    while True:
+        device.show()
+        event = device.input_checker()
+        device.on_event(event)
+
+
+if __name__ == '__main__':
+    main()
