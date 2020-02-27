@@ -185,7 +185,10 @@ class FavMenu(State):
         if event == "bck":
             return StartMenu()
         else:
-            return ShowFavProduct(event, self.fav_barcode[event])
+            try:
+                return ShowFavProduct(event, self.fav_barcode[event])
+            except KeyError:
+                return StartMenu()
 
     def get_fav_by_barcode(self):
         self.fav_name, self.fav_barcode = favorite_manager.get_all_favorite()
